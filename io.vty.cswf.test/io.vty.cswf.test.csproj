@@ -37,6 +37,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Extensions" />
   </ItemGroup>
   <Choose>
     <When Condition="('$(VisualStudioVersion)' == '10.0' or '$(VisualStudioVersion)' == '') and '$(TargetFrameworkVersion)' == 'v3.5'">
@@ -51,7 +53,22 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="log\LogTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="LogTest.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\io.vty.cswf\io.vty.cswf.csproj">
+      <Project>{074D7A3B-ADAE-434A-AF73-BB8263965303}</Project>
+      <Name>io.vty.cswf</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\log4net\src\log4net.vs2010.csproj">
+      <Project>{181fe707-e161-4722-9f38-6aaab6faa106}</Project>
+      <Name>log4net.vs2010</Name>
+    </ProjectReference>
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
