@@ -9,7 +9,7 @@ namespace io.vty.cswf.netw.r
     /// <summary>
     /// Bys is byte[] slice.
     /// </summary>
-    public interface Bys
+    public interface Bys : NetwVer, NetwVable
     {
         /// <summary>
         /// byte[] slice length.

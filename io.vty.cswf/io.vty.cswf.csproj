@@ -40,9 +40,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
-    <Compile Include="netw\r\Cmd.cs" />
+    <Compile Include="netw\r\Bys.cs" />
+    <Compile Include="netw\r\Netw.cs" />
     <Compile Include="netw\r\NetwBase.cs" />
+    <Compile Include="netw\r\Var.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
