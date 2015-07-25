@@ -47,6 +47,13 @@
     <Compile Include="netw\impl\OBDC.cs" />
     <Compile Include="netw\impl\OBDH.cs" />
     <Compile Include="netw\BysImpl.cs" />
+    <Compile Include="netw\impl\QueueH.cs" />
+    <Compile Include="netw\impl\TaskH.cs" />
+    <Compile Include="netw\NetwBaseImpl.cs" />
+    <Compile Include="netw\NetwImpl.cs" />
+    <Compile Include="netw\NetwImplV.cs" />
+    <Compile Include="netw\NetwRunner.cs" />
+    <Compile Include="netw\NetwRunnerV.cs" />
     <Compile Include="netw\r\Bys.cs" />
     <Compile Include="netw\r\CmdListener.cs" />
     <Compile Include="netw\r\Converter.cs" />
