@@ -41,3 +41,8 @@ $RECYCLE.BIN/
 Network Trash Folder
 Temporary Items
 .apdisk
+.vs
+*.bak
+io.vty.cswf.test/obj
+io.vty.cswf/bin
+io.vty.cswf/obj
