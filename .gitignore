@@ -44,5 +44,10 @@ Temporary Items
 .vs
 *.bak
 io.vty.cswf.test/obj
+io.vty.cswf.test/bin
+io.vty.cswf.test.console/obj
+io.vty.cswf.test.console/bin
 io.vty.cswf/bin
 io.vty.cswf/obj
+log4net
+TestResults
