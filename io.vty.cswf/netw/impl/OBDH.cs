@@ -30,8 +30,18 @@ namespace io.vty.cswf.netw.impl
             }
             else
             {
-                L.W("receive unknow mark({0}) on handlers:{1}", mark, this.hs);
+                L.W("receive unknow mark({0}) message({1}) on handlers:{2}", mark, m.ToString(), this.hs);
             }
+        }
+
+        /// <summary>
+        /// adding handler by mode.
+        /// </summary>
+        /// <param name="m">mode</param>
+        /// <param name="h">handler</param>
+        public void addh(byte m, CmdListener h)
+        {
+            this.hs.Add(m, h);
         }
     }
 }

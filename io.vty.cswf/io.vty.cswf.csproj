@@ -43,8 +43,10 @@
     <Compile Include="log\ILog.cs" />
     <Compile Include="log\LogImpl.cs" />
     <Compile Include="log\Log.cs" />
+    <Compile Include="netw\BysImplV.cs" />
     <Compile Include="netw\impl\OBDC.cs" />
     <Compile Include="netw\impl\OBDH.cs" />
+    <Compile Include="netw\BysImpl.cs" />
     <Compile Include="netw\r\Bys.cs" />
     <Compile Include="netw\r\CmdListener.cs" />
     <Compile Include="netw\r\Converter.cs" />
@@ -57,6 +59,7 @@
     <Compile Include="netw\r\NetwRunner.cs" />
     <Compile Include="netw\r\NetwVable.cs" />
     <Compile Include="netw\r\NetwVer.cs" />
+    <Compile Include="netw\r\NetwWrapper.cs" />
     <Compile Include="netw\r\Var.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

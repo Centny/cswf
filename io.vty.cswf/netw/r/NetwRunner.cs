@@ -16,15 +16,15 @@ namespace io.vty.cswf.netw.r
         /// <summary>
         /// commnad listner.
         /// </summary>
-        protected CmdListener msgl { get; set; }
+        protected virtual CmdListener msgl { get; set; }
         /// <summary>
         /// event listener.
         /// </summary>
-        protected EvnListener evnl { get; set; }
+        protected virtual EvnListener evnl { get; set; }
         /// <summary>
         /// get current running state.
         /// </summary>
-        public bool running { get; set; }
+        public virtual bool running { get; set; }
 
         public NetwRunner(CmdListener msg, EvnListener evn)
         {
@@ -32,7 +32,7 @@ namespace io.vty.cswf.netw.r
             this.evnl = evn;
         }
 
-        public void run_c()
+        public virtual void run_c()
         {
             L.Debug("starting running Netw");
             this.evnl.begCon(this);
@@ -63,7 +63,7 @@ namespace io.vty.cswf.netw.r
         /// <summary>
         /// waiting runner stop.
         /// </summary>
-        public void wcon()
+        public virtual void wcon()
         {
             while (true)
             {

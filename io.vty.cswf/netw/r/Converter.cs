@@ -14,7 +14,7 @@ namespace io.vty.cswf.netw.r
         /// <param name="nw">base stream</param>
         /// <param name="bys">byte[]</param>
         /// <returns></returns>
-        T B2V<T>(Netw nw, Bys bys);
+        T B2V<T>(Bys bys);
 
         /// <summary>
         /// convert object to byte[].
