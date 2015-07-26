@@ -54,6 +54,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="io\PipeStreamTests.cs" />
     <Compile Include="log\LogTests.cs" />
     <Compile Include="netw\impl\OBDHTests.cs" />
     <Compile Include="netw\impl\QueueHTests.cs" />

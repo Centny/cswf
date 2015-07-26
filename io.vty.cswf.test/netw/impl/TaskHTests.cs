@@ -17,7 +17,7 @@ namespace io.vty.cswf.netw.impl.tests
         public void onCmd(NetwRunnable nr, Bys m)
         {
             Console.WriteLine(val++);
-            Thread.Sleep(30000);
+            Thread.Sleep(300);
         }
 
         [TestMethod()]
@@ -29,7 +29,7 @@ namespace io.vty.cswf.netw.impl.tests
             {
                 h.onCmd(null, null);
             }
-            Thread.Sleep(1000);
+            Thread.Sleep(5000);
             Console.WriteLine("running->" + val);
         }
     }

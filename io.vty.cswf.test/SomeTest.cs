@@ -2,46 +2,29 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.IO;
 using System.Threading.Tasks;
-using io.vty.cswf.test.util;
+using io.vty.cswf.util;
 using System.Threading;
 using io.vty.cswf.io;
+using io.vty.cswf.netw;
 
 namespace io.vty.cswf.test
 {
     [TestClass]
     public class SomeTest
     {
+
         [TestMethod]
-        public void TestStream()
+        public void Stream2Test()
         {
-            var running = true;
-            var ms = new PipeStream();
-            var bys = Util.bytes("abc\n");
-            new Task<int>(() =>
-            {
-                var buf = new byte[4];
-                while (running)
-                {
-                    var len = ms.Read(buf, 0, 4);
-                    Console.Write("R-({1})>{0}", Util.tos(buf), len);
-                }
-                Console.WriteLine("R->end");
-                return 0;
-            }, 0).Start();
-            new Task<int>(() =>
-            {
-                for (int i = 0; i < 3; i++)
-                {
-                    Console.WriteLine("W->" + i);
-                    ms.Write(bys, 0, bys.Length);
-                    ms.Flush();
-                }
-                return 0;
-            }, 0).Start();
-            Thread.Sleep(500);
-            running = false;
-            ms.Write(bys, 0, bys.Length);
-            Thread.Sleep(500);
+            var ms = new MemoryStream();
+            Console.WriteLine(ms.CanWrite);
+            Console.WriteLine(ms.CanRead);
+            ms.Write(new byte[3] { 1, 2, 3 }, 0, 3);
+            ms.Flush();
+
+            var bys = new byte[1024];
+            var len = ms.Read(bys, 0, 1024);
+            Console.WriteLine(len + "->" + BysImplV.bstr(bys));
         }
     }
 }

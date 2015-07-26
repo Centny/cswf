@@ -9,7 +9,7 @@ using io.vty.cswf.netw.r;
 using io.vty.cswf.io;
 using System.Runtime.Serialization;
 using io.vty.cswf.netw.impl;
-using io.vty.cswf.test.util;
+using io.vty.cswf.util;
 using System.Threading;
 
 namespace io.vty.cswf.netw.tests
@@ -47,7 +47,7 @@ namespace io.vty.cswf.netw.tests
             }
             protected override NetwBase createNetwBase()
             {
-                return new NetwBaseImpl(new System.IO.BufferedStream(new PipeStream()), 102400);
+                return new NetwBaseImpl(new System.IO.BufferedStream(new PipeStream(100)), 102400);
             }
         }
 
@@ -80,7 +80,7 @@ namespace io.vty.cswf.netw.tests
             }, 0).Start();
             r.wcon();
             r.strc.writem(Util.bytes("abc\n"));
-            Thread.Sleep(50000);
+            Thread.Sleep(5000);
         }
 
         public void begCon(NetwRunnable nr)

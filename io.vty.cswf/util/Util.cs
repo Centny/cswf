@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace io.vty.cswf.test.util
+namespace io.vty.cswf.util
 {
     /// <summary>
     /// Providers common util function.
@@ -29,6 +29,18 @@ namespace io.vty.cswf.test.util
         public static string tos(byte[] bys)
         {
             return Encoding.UTF8.GetString(bys);
+        }
+
+        /// <summary>
+        /// convert byte[] to string.
+        /// </summary>
+        /// <param name="bys">byte[] data.</param>
+        /// <param name="off">data offset</param>
+        /// <param name="len">data length</param>
+        /// <returns></returns>
+        public static string tos(byte[] bys, int off, int len)
+        {
+            return Encoding.UTF8.GetString(bys, off, len);
         }
     }
 }
