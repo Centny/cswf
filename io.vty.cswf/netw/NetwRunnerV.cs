@@ -15,7 +15,7 @@ namespace io.vty.cswf.netw
         /// <summary>
         /// the wrapper to call runer Converter impl.
         /// </summary>
-        private class Wrapper : NetwImplV
+        protected class Wrapper : NetwImplV
         {
             protected NetwRunnerV runner { get; set; }
             public Wrapper(NetwRunnerV runner, NetwBase rwb) : base(rwb)
@@ -40,7 +40,10 @@ namespace io.vty.cswf.netw
             this.rw = new Wrapper(this, this.createNetwBase());
             return this.rw;
         }
-
+        /// <summary>
+        /// ceate the base stream to runner.
+        /// </summary>
+        /// <returns></returns>
         protected abstract NetwBase createNetwBase();
 
         public abstract T B2V<T>(Bys bys);

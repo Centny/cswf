@@ -16,11 +16,11 @@ namespace io.vty.cswf.netw.r
         /// <summary>
         /// commnad listner.
         /// </summary>
-        protected virtual CmdListener msgl { get; set; }
+        public virtual CmdListener msgl { get; set; }
         /// <summary>
         /// event listener.
         /// </summary>
-        protected virtual EvnListener evnl { get; set; }
+        public virtual EvnListener evnl { get; set; }
         /// <summary>
         /// get current running state.
         /// </summary>

@@ -32,6 +32,7 @@ namespace io.vty.cswf.netw
         public NetwBaseImpl(BufferedStream stream, int limit)
         {
             this.stream = stream;
+            this.limit = limit;
             Buffer.BlockCopy(Var.H_MOD, 0, this.wbuf, 0, 3);
         }
 

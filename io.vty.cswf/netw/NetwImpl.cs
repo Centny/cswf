@@ -13,6 +13,7 @@ namespace io.vty.cswf.netw
     /// </summary>
     public abstract class NetwImpl : r.Netw
     {
+        private readonly byte[] hbuf = new byte[5];
         /// <summary>
         /// the base stream.
         /// </summary>
@@ -48,12 +49,22 @@ namespace io.vty.cswf.netw
 
         public byte[] readm()
         {
-            throw new NotImplementedException();
+            this.readw(this.hbuf);
+            int len = 0;
+            len += (this.hbuf[3]) << 8;
+            len += (this.hbuf[4]);
+            if (!Var.valid_h(this.hbuf, 0) || len < 1)
+            {
+                throw new ModException("reading invalid mode for data:" + BysImpl.bstr(this.hbuf));
+            }
+            byte[] tbuf = new byte[len];
+            this.readw(tbuf);
+            return tbuf;
         }
 
         public int readw(byte[] buf)
         {
-            return this.readw(buf,0,buf.Length);
+            return this.readw(buf, 0, buf.Length);
         }
 
         public int readw(byte[] buf, int off, int len)
@@ -68,7 +79,7 @@ namespace io.vty.cswf.netw
                 throw new InvalidDataException("the data list is null or empty");
             }
             IList<Bys> tms = new List<Bys>();
-            foreach(byte[] m in ms)
+            foreach (byte[] m in ms)
             {
                 tms.Add(this.newM(m, 0, m.Length));
             }
