@@ -26,7 +26,7 @@ namespace io.vty.cswf.netw.impl
         /// add handler to queue.
         /// </summary>
         /// <param name="l"></param>
-        public void addh(CmdListener l)
+        public virtual void addh(CmdListener l)
         {
             this.qs.Add(l);
         }

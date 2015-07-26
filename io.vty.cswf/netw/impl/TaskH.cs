@@ -26,9 +26,9 @@ namespace io.vty.cswf.netw.impl
             this.h = h;
         }
 
-        public void onCmd(NetwRunnable nr, Bys m)
+        public virtual void onCmd(NetwRunnable nr, Bys m)
         {
-            throw new NotImplementedException();
+            new Task(i => h.onCmd(nr, m), 0).Start();
         }
     }
 }

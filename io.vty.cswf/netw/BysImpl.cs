@@ -49,7 +49,7 @@ namespace io.vty.cswf.netw
 
         public virtual byte get(int idx)
         {
-            return this.bys[idx];
+            return this.bys[this.offset + idx];
         }
 
         public virtual void reset(int off, int len)

@@ -52,7 +52,10 @@ namespace io.vty.cswf.netw.impl
 
         public void writeM(IList<Bys> ms)
         {
-            this.nb.writeM(ms);
+            List<Bys> tms = new List<Bys>();
+            tms.Add(new BysImpl(null, new byte[1] { this.m }, 0, 1));
+            tms.AddRange(ms);
+            this.nb.writeM(tms);
         }
     }
 }
