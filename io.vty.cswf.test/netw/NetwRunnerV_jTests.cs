@@ -46,6 +46,7 @@ namespace io.vty.cswf.netw.tests
             }
             protected override Netw createNetw()
             {
+                base.createNetw();
                 NetwBase nb = this.createNetwBase();
                 this.rw = this.objc = new Wrapper(this, new OBDC(nb, 0));
                 this.strc = new Wrapper(this, new OBDC(nb, 1));
@@ -81,6 +82,8 @@ namespace io.vty.cswf.netw.tests
             public CDL cdl { get; set; }
             public void onCmd(NetwRunnable nr, Bys m)
             {
+                m.stream = m.stream;
+                m.limit = m.limit;
                 Console.WriteLine("R->Str:{0}", m.ToString());
                 this.cdl.done();
             }
@@ -90,7 +93,7 @@ namespace io.vty.cswf.netw.tests
         public void RunnerTest()
         {
             this.cdl = new CDL(5);
-            var r = new Runner(null, this, 20);
+            var r = new Runner(null, this, 21);
             new Task<int>(() =>
             {
                 r.run_c();
@@ -111,6 +114,11 @@ namespace io.vty.cswf.netw.tests
                     return 0;
                 }, i).Start();
             }
+            IList<byte[]> bys;
+            IList<Bys> cmds;
+            bys= new List<Byte[]>();
+            bys.Add(Util.bytes("abc-str-" + 100));
+            r.strc.writem(bys);
             r.cdl.wait();
             //
             r.objc.rwb.stream.Write(new byte[5] { 1, 2, 3, 4, 5 }, 0, 5);

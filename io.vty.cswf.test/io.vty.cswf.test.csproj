@@ -56,9 +56,12 @@
   <ItemGroup>
     <Compile Include="io\PipeStreamTests.cs" />
     <Compile Include="log\LogTests.cs" />
+    <Compile Include="netw\BysImplTests.cs" />
     <Compile Include="netw\impl\OBDHTests.cs" />
     <Compile Include="netw\impl\QueueHTests.cs" />
     <Compile Include="netw\impl\TaskHTests.cs" />
+    <Compile Include="netw\NetwBaseImplTests.cs" />
+    <Compile Include="netw\NetwImplTests.cs" />
     <Compile Include="netw\NetwRunnerV_jTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="LogTest.cs" />
