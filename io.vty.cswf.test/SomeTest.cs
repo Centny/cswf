@@ -16,15 +16,15 @@ namespace io.vty.cswf.test
         [TestMethod]
         public void Stream2Test()
         {
-            var ms = new MemoryStream();
+            var ms = new BufferedStream(new MemoryStream());
             Console.WriteLine(ms.CanWrite);
             Console.WriteLine(ms.CanRead);
             ms.Write(new byte[3] { 1, 2, 3 }, 0, 3);
             ms.Flush();
 
-            var bys = new byte[1024];
-            var len = ms.Read(bys, 0, 1024);
-            Console.WriteLine(len + "->" + BysImplV.bstr(bys));
+            var bys = new byte[10];
+            var len = ms.Read(bys, 0, 10);
+            Console.WriteLine(len + "->" + bys[0]);
         }
     }
 }

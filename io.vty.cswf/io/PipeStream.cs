@@ -63,7 +63,7 @@ namespace io.vty.cswf.io
 
             set
             {
-                throw new NotImplementedException();
+                throw new NotSupportedException();
             }
         }
 
@@ -81,7 +81,7 @@ namespace io.vty.cswf.io
                 }
                 if (this.IsClosed)
                 {
-                    throw new EndOfStreamException();
+                    return 0;
                 }
                 var tc = count;
                 if (this.len < tc)
@@ -139,7 +139,7 @@ namespace io.vty.cswf.io
                 }
                 if (this.IsClosed)
                 {
-                    throw new EndOfStreamException();
+                    throw new IOException();
                 }
                 var tc = count;
                 if (tc > this.buf.Length - this.len)
@@ -148,8 +148,15 @@ namespace io.vty.cswf.io
                 }
                 if (this.off + this.len + tc > this.buf.Length)
                 {
-                    Buffer.BlockCopy(buffer, offset, this.buf, this.off + this.len, this.buf.Length - this.off - this.len);
-                    Buffer.BlockCopy(buffer, offset + this.buf.Length - this.off - this.len, this.buf, 0, tc - (this.buf.Length - this.off - this.len));
+                    if (this.off + this.len < this.buf.Length)
+                    {
+                        Buffer.BlockCopy(buffer, offset, this.buf, this.off + this.len, this.buf.Length - this.off - this.len);
+                        Buffer.BlockCopy(buffer, offset + this.buf.Length - this.off - this.len, this.buf, 0, tc - (this.buf.Length - this.off - this.len));
+                    }
+                    else
+                    {
+                        Buffer.BlockCopy(buffer, offset, this.buf, this.off + this.len - this.buf.Length, tc);
+                    }
                 }
                 else
                 {
@@ -169,16 +176,16 @@ namespace io.vty.cswf.io
                 this.IsClosed = true;
                 Monitor.Pulse(this.buf);
             }
-            
+
         }
         public override long Seek(long offset, SeekOrigin origin)
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
 
         public override void SetLength(long value)
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
 
     }

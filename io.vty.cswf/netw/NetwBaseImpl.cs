@@ -16,7 +16,7 @@ namespace io.vty.cswf.netw
         /// <summary>
         /// the base stream.
         /// </summary>
-        public virtual BufferedStream stream { get; protected set; }
+        public virtual Stream stream { get; set; }
         /// <summary>
         /// the write limit.
         /// </summary>
@@ -29,7 +29,7 @@ namespace io.vty.cswf.netw
         /// </summary>
         /// <param name="stream">base stream</param>
         /// <param name="limit">limit</param>
-        public NetwBaseImpl(BufferedStream stream, int limit)
+        public NetwBaseImpl(Stream stream, int limit)
         {
             this.stream = stream;
             this.limit = limit;
@@ -44,7 +44,7 @@ namespace io.vty.cswf.netw
             while (tlen > 0)
             {
                 rlen = this.stream.Read(buf, toff, tlen);
-                if (rlen < 0)
+                if (rlen < 1)
                 {
                     throw new EOFException();
                 }

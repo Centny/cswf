@@ -25,5 +25,11 @@ namespace io.vty.cswf.netw.r
         /// <param name="nr">runner</param>
         /// <param name="e">error</param>
         void onErr(NetwRunnable nr, Exception e);
+
+        /// <summary>
+        /// calling on runner stop.
+        /// </summary>
+        /// <param name="nr"></param>
+        void endCon(NetwRunnable nr);
     }
 }

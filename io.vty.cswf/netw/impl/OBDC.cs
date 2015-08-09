@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,27 +13,29 @@ namespace io.vty.cswf.netw.impl
     /// </summary>
     public class OBDC : r.NetwBase
     {
-        /// <summary>
-        /// default constructor by base stream and byte.
-        /// </summary>
-        /// <param name="nb">base stream</param>
-        /// <param name="m">byte mode</param>
-        public OBDC(r.NetwBase nb, byte m)
+        public virtual Stream stream
         {
-            this.nb = nb;
-            this.m = m;
+            get
+            {
+                return this.nb.stream;
+            }
+
+            set
+            {
+                this.nb.stream = value;
+            }
         }
         /// <summary>
         /// one byte mode.
         /// </summary>
-        protected byte m { get; set; }
+        protected virtual byte m { get; set; }
 
         /// <summary>
         /// the base stream.
         /// </summary>
-        protected NetwBase nb { get; set; }
+        protected virtual NetwBase nb { get; set; }
 
-        public int limit
+        public virtual int limit
         {
             get
             {
@@ -45,12 +48,23 @@ namespace io.vty.cswf.netw.impl
             }
         }
 
-        public int readw(byte[] buf, int off, int len)
+        /// <summary>
+        /// default constructor by base stream and byte.
+        /// </summary>
+        /// <param name="nb">base stream</param>
+        /// <param name="m">byte mode</param>
+        public OBDC(r.NetwBase nb, byte m)
+        {
+            this.nb = nb;
+            this.m = m;
+        }
+
+        public virtual int readw(byte[] buf, int off, int len)
         {
             return this.nb.readw(buf, off, len);
         }
 
-        public void writeM(IList<Bys> ms)
+        public virtual void writeM(IList<Bys> ms)
         {
             List<Bys> tms = new List<Bys>();
             tms.Add(new BysImpl(null, new byte[1] { this.m }, 0, 1));

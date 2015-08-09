@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.IO;
+
 namespace io.vty.cswf.netw.r
 {
     /// <summary>
@@ -8,6 +10,10 @@ namespace io.vty.cswf.netw.r
     /// </summary>
     public interface NetwBase
     {
+        /// <summary>
+        /// the base stream.
+        /// </summary>
+        Stream stream { get; set; }
         /// <summary>
         /// read and wait data to full byte[] by offset and length.
         /// </summary>

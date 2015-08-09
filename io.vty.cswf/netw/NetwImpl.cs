@@ -14,10 +14,22 @@ namespace io.vty.cswf.netw
     public abstract class NetwImpl : r.Netw
     {
         private readonly byte[] hbuf = new byte[5];
+        public Stream stream
+        {
+            get
+            {
+                return this.rwb.stream;
+            }
+
+            set
+            {
+                this.rwb.stream = value;
+            }
+        }
         /// <summary>
         /// the base stream.
         /// </summary>
-        protected virtual NetwBase rwb { get; set; }
+        public virtual NetwBase rwb { get; protected set; }
         /// <summary>
         /// the constructor by base stream.
         /// </summary>

@@ -58,6 +58,7 @@ namespace io.vty.cswf.netw.r
             }
             this.running = false;
             L.Debug("Netw stopped");
+            this.evnl.endCon(this);
         }
 
         /// <summary>

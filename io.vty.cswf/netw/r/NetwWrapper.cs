@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,6 +12,18 @@ namespace io.vty.cswf.netw.r
     /// </summary>
     public class NetwWrapper : Netw
     {
+        public virtual Stream stream
+        {
+            get
+            {
+                return this.bnw.stream;
+            }
+
+            set
+            {
+                this.bnw.stream = stream;
+            }
+        }
         /// <summary>
         /// base Netw stream.
         /// </summary>
