@@ -103,6 +103,26 @@ namespace io.vty.cswf.netw
             throw new NotImplementedException();
         }
 
+        public override bool Equals(object obj)
+        {
+            if (!(obj is BysImpl))
+            {
+                return false;
+            }
+            BysImpl bys = (BysImpl)obj;
+            if (this.length != bys.length)
+            {
+                return false;
+            }
+            for (int i = 0; i < this.length; i++)
+            {
+                if (this.bys[this.offset + i] != bys.bys[bys.offset + i])
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
         /// <summary>
         /// convert byte[] to like:[1,3,4];
         /// </summary>

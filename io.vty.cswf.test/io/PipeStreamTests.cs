@@ -25,8 +25,8 @@ namespace io.vty.cswf.io.tests
                     var buf = new byte[1024];
                     while (running)
                     {
-                        var len = ms.Read(buf, 0, 1024);
-                        Console.Write("R-({1})>{0}\n", Util.tos(buf, 0, len), len);
+                        int lenn = ms.Read(buf, 0, 1024);
+                        Console.Write("R-({1})>{0}\n", Util.tos(buf, 0, lenn), lenn);
                     }
                 }
                 catch (Exception e)
@@ -51,6 +51,46 @@ namespace io.vty.cswf.io.tests
             running = false;
             ms.Close();
             Thread.Sleep(500);
+
+            //
+            //for cover
+            bool bv = ms.CanRead;
+            bv = ms.CanSeek;
+            bv = ms.CanTimeout;
+            bv = ms.CanWrite;
+            long len = ms.Length;
+            try
+            {
+                var bys = Util.bytes("abc");
+                ms.Write(bys, 0, bys.Length);
+            }
+            catch (Exception e)
+            {
+
+            }
+            try
+            {
+                ms.Position = ms.Position;
+            }
+            catch (Exception e)
+            {
+
+            }
+            try
+            {
+                ms.SetLength(0);
+            }catch(Exception e)
+            {
+
+            }
+            try
+            {
+                ms.Seek(0, System.IO.SeekOrigin.Begin);
+            }
+            catch (Exception e)
+            {
+
+            }
         }
 
     }

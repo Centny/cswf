@@ -63,11 +63,13 @@
     <Compile Include="netw\NetwBaseImplTests.cs" />
     <Compile Include="netw\NetwImplTests.cs" />
     <Compile Include="netw\NetwRunnerV_jTests.cs" />
+    <Compile Include="netw\r\NetwWrapperTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="LogTest.cs" />
     <Compile Include="SomeTest.cs" />
     <Compile Include="util\CDLTests.cs" />
     <Compile Include="util\JsonTests.cs" />
+    <Compile Include="util\UtilTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

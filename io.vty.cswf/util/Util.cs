@@ -42,5 +42,31 @@ namespace io.vty.cswf.util
         {
             return Encoding.UTF8.GetString(bys, off, len);
         }
+
+        /// <summary>
+        /// compare two byte[] value
+        /// </summary>
+        /// <param name="a">one byte[]</param>
+        /// <param name="b">other byte[]</param>
+        /// <returns>return true if all byte value is equal</returns>
+        public static bool equal(byte[] a, byte[] b)
+        {
+            if (a == null)
+            {
+                return b == null;
+            }
+            if (a.Length != b.Length)
+            {
+                return false;
+            }
+            for (int i = 0; i < a.Length; i++)
+            {
+                if (a[i] != b[i])
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
     }
 }
