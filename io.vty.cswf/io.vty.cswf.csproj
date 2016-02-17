@@ -73,6 +73,7 @@
     <Compile Include="netw\r\NetwWrapper.cs" />
     <Compile Include="netw\r\Var.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="util\Args.cs" />
     <Compile Include="util\CDL.cs" />
     <Compile Include="util\Json.cs" />
     <Compile Include="util\Util.cs" />
