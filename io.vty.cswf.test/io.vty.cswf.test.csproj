@@ -72,6 +72,7 @@
     <Compile Include="util\ArgsTest.cs" />
     <Compile Include="util\CDLTests.cs" />
     <Compile Include="util\JsonTests.cs" />
+    <Compile Include="util\ExecTests.cs" />
     <Compile Include="util\UtilTests.cs" />
   </ItemGroup>
   <ItemGroup>

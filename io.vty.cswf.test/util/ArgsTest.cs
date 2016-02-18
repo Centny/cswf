@@ -50,6 +50,10 @@ namespace io.vty.cswf.test.util
             args = Args.parseArgs(new string[] { "a" }, new string[] { "-a", "xx", "-b", "c" });
             Assert.AreEqual(1, args.Vals.Count);
             Assert.AreEqual(2, args.Kvs.Count);
+            //
+            args = Args.parseArgs(new string[] { "a" }, new string[] { "-a", "xx", "-b", "c", "-x", "-y", "xx" });
+            Assert.AreEqual(1, args.Vals.Count);
+            Assert.AreEqual(4, args.Kvs.Count);
 
             //
             //

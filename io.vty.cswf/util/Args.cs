@@ -91,6 +91,11 @@ namespace io.vty.cswf.util
                 }
                 if (arg[0] == '-')
                 {
+                    if (key.Length > 0)
+                    {
+                        this.Kvs.Add(key, "");
+                        key = "";
+                    }
                     key = arg.Substring(1);
                     if (IsNkv(key))
                     {
