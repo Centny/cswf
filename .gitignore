@@ -51,3 +51,5 @@ io.vty.cswf/bin
 io.vty.cswf/obj
 log4net
 TestResults
+bin
+obj

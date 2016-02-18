@@ -1,4 +1,5 @@
 ﻿using io.vty.cswf.log;
+using io.vty.cswf.test.log;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,8 +13,9 @@ namespace io.vty.cswf.test.console
     {
         static void Main(string[] args)
         {
-            ILog xx =Log.New();
-            xx.D("xxxss");
+            TestLog.show();
+            //ILog xx =Log.New();
+            //xx.D("xxxss");
             /*
             ILog log;
             log = LogManager.GetLogger("ssss");
