@@ -25,7 +25,7 @@ namespace io.vty.cswf.util
             this.Vals = new List<string>();
         }
 
-        public bool IntVal(string key, out int val)
+        public bool IntVal(string key, out int val, int defaulv = 0)
         {
             if (this.Kvs.ContainsKey(key))
             {
@@ -33,23 +33,23 @@ namespace io.vty.cswf.util
             }
             else
             {
-                val = 0;
+                val = defaulv;
                 return false;
             }
         }
-        public bool FloatVal(string key,out float val)
+        public bool FloatVal(string key, out float val, int defaultv = 0)
         {
-            if(this.Kvs.ContainsKey(key))
+            if (this.Kvs.ContainsKey(key))
             {
                 return float.TryParse(this.Kvs[key], out val);
             }
             else
             {
-                val = 0;
+                val = defaultv;
                 return false;
             }
         }
-        public bool StringVal(string key, out string val)
+        public bool StringVal(string key, out string val, string defaultv = "")
         {
             if (this.Kvs.ContainsKey(key))
             {
@@ -57,7 +57,7 @@ namespace io.vty.cswf.util
             }
             else
             {
-                val = "";
+                val = defaultv;
             }
             return val.Length > 0;
         }
