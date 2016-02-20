@@ -8,9 +8,9 @@ namespace io.vty.cswf.util
 {
     public class Exec
     {
-        public static string exec(string exe,params string[] args)
+        public static int exec(out string output, string exe, params string[] args)
         {
-            Process proc=new Process();
+            Process proc = new Process();
             proc.StartInfo.UseShellExecute = false;
             proc.StartInfo.FileName = exe;
             proc.StartInfo.Arguments = string.Join(" ", args);
@@ -18,7 +18,8 @@ namespace io.vty.cswf.util
             proc.StartInfo.CreateNoWindow = true;
             proc.Start();
             proc.WaitForExit();
-            return proc.StandardOutput.ReadToEnd();
+            output = proc.StandardOutput.ReadToEnd();
+            return proc.ExitCode;
         }
     }
 }
