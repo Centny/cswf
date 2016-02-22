@@ -54,5 +54,18 @@ namespace io.vty.cswf.util.tests
             b = Json.parse<ObjB>(json);
             Console.WriteLine(b.As[1].A);
         }
+
+        [TestMethod()]
+        public void DictTest()
+        {
+            ObjB b = new ObjB();
+            b.As.Add(new ObjA("A1", "B1"));
+            b.As.Add(new ObjA("A2", "B2"));
+            string json = Json.stringify(b);
+            Console.WriteLine(json);
+            //
+            var res = Json.toDict(json);
+            Console.WriteLine(json);
+        }
     }
 }

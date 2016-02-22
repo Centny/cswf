@@ -1,7 +1,9 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
 using System.Text;
 using System.Threading.Tasks;
@@ -72,5 +74,11 @@ namespace io.vty.cswf.util
         {
             return Encoding.UTF8.GetString(stringify_(v));
         }
+
+        public static IDictionary<string,object> toDict(string json)
+        {
+            return JsonConvert.DeserializeObject<Dictionary<string, object>>(json);
+        }
+
     }
 }

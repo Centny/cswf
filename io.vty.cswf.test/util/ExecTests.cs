@@ -11,13 +11,16 @@ namespace io.vty.cswf.test.util
         public void TestExec()
         {
             //
-            var res1 = Exec.exec("..\\..\\exec1.bat");
-            Assert.AreEqual("ss", res1.Trim());
-            Console.WriteLine(res1);
+            string data;
+            var res1 = Exec.exec(out data,"..\\..\\exec1.bat");
+            Assert.AreEqual(0, res1);
+            Assert.AreEqual("ss", data.Trim());
+            Console.WriteLine(data);
             //
-            var res2 = Exec.exec("..\\..\\exec2.bat", "a", "b");
-            Assert.AreEqual("a b", res2.Trim());
-            Console.WriteLine(res2);
+            var res2 = Exec.exec(out data,"..\\..\\exec2.bat", "a", "b");
+            Assert.AreEqual(0, res2);
+            Assert.AreEqual("a b",data.Trim());
+            Console.WriteLine(data);
         }
     }
 }

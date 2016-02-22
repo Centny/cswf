@@ -31,6 +31,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\..\Json\Bin\Portable40\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Runtime.Serialization" />
@@ -76,6 +79,7 @@
     <Compile Include="util\Args.cs" />
     <Compile Include="util\CDL.cs" />
     <Compile Include="util\Exec.cs" />
+    <Compile Include="util\H.cs" />
     <Compile Include="util\Json.cs" />
     <Compile Include="util\Util.cs" />
   </ItemGroup>
