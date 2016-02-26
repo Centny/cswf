@@ -123,6 +123,20 @@ namespace io.vty.cswf.util
             return this;
         }
 
+        public void Print()
+        {
+            Console.WriteLine(" Kvs");
+            foreach (var key in this.Kvs.Keys)
+            {
+                Console.WriteLine("  {0}:\t{1}", key, this.Kvs[key]);
+            }
+            Console.WriteLine(" NKV");
+            foreach (var nkv in this.NKV)
+            {
+                Console.WriteLine("  {0}", nkv);
+            }
+        }
+
         public static Args parseArgs(string[] args, int beg = 0)
         {
             return new Args().parse(args, beg);

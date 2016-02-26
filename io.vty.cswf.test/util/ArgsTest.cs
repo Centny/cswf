@@ -73,6 +73,14 @@ namespace io.vty.cswf.test.util
             Assert.AreEqual("xxx", sv);
             Assert.AreEqual(false, args.StringVal("xx", out sv));
             Assert.AreEqual(true, args.Exist("e"));
+
+        }
+        [TestMethod]
+        public void TestParse2()
+        {
+            //
+            var args = Args.parseArgs(new string[] { "w", "e", "p", "l", "x" }, new string[] { "cswf-doc", "-l", "-o", "$tmp_j", "-exe_c", "bash", "-exe_f", "-c cov_pdf2jpg_c.sh {0} $tmp_f $3 $4", "-exe_p", "$5", "-x", "$1", "$1" });
+            args.Print();
         }
     }
 }
