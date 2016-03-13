@@ -107,10 +107,13 @@ namespace io.vty.cswf.netw
             this.rwb.writeM(ms);
         }
 
-        public void writeM(Bys m)
+        public void writeM(params Bys[] m)
         {
             IList<Bys> tms = new List<Bys>();
-            tms.Add(m);
+            foreach(var bys in m)
+            {
+                tms.Add(bys);
+            }
             this.writeM(tms);
         }
 

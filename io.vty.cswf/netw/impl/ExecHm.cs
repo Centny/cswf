@@ -20,15 +20,6 @@ namespace io.vty.cswf.netw.impl
         }
         private static readonly ILog L = Log.New();
         public delegate void VNA_F(NetwRunnable nr, ExecHm rc, Bys m, out string name, out IDictionary<string, Object> args);
-        public class RCM_Cmd : Dict
-        {
-            public Bys cmd;
-            public string name;
-            public RCM_Cmd(Bys cmd, string name, IDictionary<string, object> data) : base(data)
-            {
-
-            }
-        }
         public delegate Object RC_FH(RCM_Cmd rc, out bool next);
         public delegate Object RC_HH(RCM_Cmd rc);
         protected VNA_F vna;

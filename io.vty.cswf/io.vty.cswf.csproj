@@ -45,10 +45,14 @@
   <ItemGroup>
     <Compile Include="io\BytesStream.cs" />
     <Compile Include="io\PipeStream.cs" />
+    <Compile Include="io\PrintStream.cs" />
     <Compile Include="log\ILog.cs" />
     <Compile Include="log\LogImpl.cs" />
     <Compile Include="log\Log.cs" />
     <Compile Include="netw\BysImplV.cs" />
+    <Compile Include="netw\dtm\DTM_C.cs" />
+    <Compile Include="netw\dtm\DTM_C_j.cs" />
+    <Compile Include="netw\impl\RCM_Cmd.cs" />
     <Compile Include="netw\impl\DoNoneH.cs" />
     <Compile Include="netw\impl\ExecHm.cs" />
     <Compile Include="netw\impl\PrefC.cs" />

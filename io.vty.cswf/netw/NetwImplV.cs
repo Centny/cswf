@@ -29,6 +29,11 @@ namespace io.vty.cswf.netw
             this.writeM(this.V2B(this, v));
         }
 
+        public void writev(Bys bys, object v)
+        {
+            this.writeM(bys, this.V2B(this, v));
+        }
+
         public override Bys newM(byte[] m, int off, int len)
         {
             return new BysImplV(this, this, m, off, len);

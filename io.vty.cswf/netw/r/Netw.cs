@@ -65,6 +65,6 @@ namespace io.vty.cswf.netw.r
         /// it will send data by H_MOD|data length|data.
         /// </summary>
         /// <param name="m">command</param>
-        void writeM(Bys m);
+        void writeM(params Bys[] m);
     }
 }

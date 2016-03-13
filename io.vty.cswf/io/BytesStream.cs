@@ -16,7 +16,7 @@ namespace io.vty.cswf.io
         protected virtual int len { get; set; }
         public virtual bool IsClosed { get; protected set; }
 
-        public BytesStream(int buf)
+        public BytesStream(int buf = 102400)
         {
             this.buf = new byte[buf];
             this.off = 0;

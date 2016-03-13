@@ -15,7 +15,7 @@ namespace io.vty.cswf.test.netw.rc
     [TestClass]
     public class NetwRunnerV_jTest
     {
-        public Object c_arg(ExecHm.RCM_Cmd rc)
+        public Object c_arg(RCM_Cmd rc)
         {
             return rc.data;
         }
@@ -27,7 +27,7 @@ namespace io.vty.cswf.test.netw.rc
             {
                 return cmd.data;
             });
-            rc.addF("c_arg", (ExecHm.RCM_Cmd cmd, out bool next) =>
+            rc.addF("c_arg", (RCM_Cmd cmd, out bool next) =>
             {
                 next = true;
                 return cmd.data;

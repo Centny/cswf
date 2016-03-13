@@ -88,7 +88,7 @@ namespace io.vty.cswf.netw.r
             bnw.writeM(ms);
         }
 
-        public virtual void writeM(Bys m)
+        public virtual void writeM(params Bys[] m)
         {
             bnw.writeM(m);
         }

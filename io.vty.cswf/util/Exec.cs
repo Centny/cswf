@@ -39,5 +39,77 @@ namespace io.vty.cswf.util
             output = sb.ToString();
             return proc.ExitCode;
         }
+
+        public static int exec(out string output, string cmds)
+        {
+            if (String.IsNullOrWhiteSpace(cmds))
+            {
+                throw new Exception("cmds is null or empty");
+            }
+            var targs = ParseArgs(cmds);
+            var args = new List<String>();
+            for (var i = 1; i < targs.Length; i++)
+            {
+                args.Add(targs[i]);
+            }
+            return exec(out output, targs[0], args.ToArray<String>());
+        }
+
+        public delegate void Do();
+        public static String[] ParseArgs(string args)
+        {
+            IList<String> ls = new List<String>();
+            StringBuilder sb = new StringBuilder();
+            char last = '\0';
+            Do adda = () =>
+            {
+                if (sb.Length > 0)
+                {
+                    ls.Add(sb.ToString());
+                    sb.Clear();
+                }
+            };
+            for (var i = 0; i < args.Length; i++)
+            {
+                if (last == '\0')
+                {
+                    switch (args[i])
+                    {
+                        case '\t':
+                            adda();
+                            break;
+                        case ' ':
+                            adda();
+                            break;
+                        case '\'':
+                            adda();
+                            last = '\'';
+                            break;
+                        case '"':
+                            adda();
+                            last = '"';
+                            break;
+                        default:
+                            sb.Append(args[i]);
+                            break;
+                    }
+
+                }
+                else
+                {
+                    if (last == args[i])
+                    {
+                        adda();
+                        last = '\0';
+                    }
+                    else
+                    {
+                        sb.Append(args[i]);
+                    }
+                }
+            }
+            adda();
+            return ls.ToArray<String>();
+        }
     }
 }

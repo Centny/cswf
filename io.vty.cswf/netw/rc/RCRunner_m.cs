@@ -21,7 +21,7 @@ namespace io.vty.cswf.netw.rc
         public string Token;
         protected OBDH obdh;
         protected ExecHm HM;
-        public OBDC MsgC
+        public NetwImplV MsgC
         {
             get;
             private set;
@@ -47,9 +47,9 @@ namespace io.vty.cswf.netw.rc
             //
             obdh.addh(CMD_C, new ExecH(this.HM));
             //
-            obdh.addh(MSG_S, this.H);
+            obdh.addh(MSG_C, this.H);
             //
-            this.MsgC = new OBDC(w, MSG_C);
+            this.MsgC = new NetwImplV.Wrapper(this.Runner, new OBDC(w, MSG_S));
             //
             this.Connected = 1;
             this.lck.Set();

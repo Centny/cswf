@@ -285,5 +285,12 @@ namespace io.vty.cswf.util
                 base[key] = value;
             }
         }
+        public virtual FCfg Clone()
+        {
+            var tcfg = new FCfg();
+            tcfg.data = new Dictionary<string, object>(this.data); ;
+            tcfg.Secs = new HashSet<string>(this.Secs);
+            return tcfg;
+        }
     }
 }
