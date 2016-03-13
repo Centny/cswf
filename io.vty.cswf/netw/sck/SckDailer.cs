@@ -27,7 +27,6 @@ namespace io.vty.cswf.netw.sck
                 throw new Exception(String.Format("the address({0}) is invalid", addr));
             }
             this.Addr = ads[0];
-            this.Addr = addr;
             this.Port = short.Parse(ads[1]);
         }
         public virtual NetwBase Dail()
