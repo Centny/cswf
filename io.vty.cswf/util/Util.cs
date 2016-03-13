@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -67,6 +68,32 @@ namespace io.vty.cswf.util
                 }
             }
             return true;
+        }
+
+        public static IDictionary<string, object> dict(string key, object val)
+        {
+            IDictionary<string, object> res = new Dictionary<string, object>();
+            res.Add(key, val);
+            return res;
+        }
+
+        public static IDictionary<string, object> NewDict()
+        {
+            return new Dictionary<string, object>();
+        }
+
+        public static long Now()
+        {
+            TimeSpan ts = DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0, 0);
+            return Convert.ToInt64(ts.TotalSeconds);
+        }
+
+        public static String read(String file)
+        {
+            using (StreamReader reader = new StreamReader(file, Encoding.UTF8))
+            {
+                return reader.ReadToEnd();
+            }
         }
     }
 }

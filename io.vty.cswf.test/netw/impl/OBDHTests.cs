@@ -31,11 +31,12 @@ namespace io.vty.cswf.netw.impl.tests
             h.addh(0, new H(1));
             h.addh(1, new H(2));
             h.addh(2, new H(3));
-            h.onCmd(null, new BysImplV(null, new byte[2] { 0, 1 }));
-            h.onCmd(null, new BysImplV(null, new byte[2] { 1, 2 }));
-            h.onCmd(null, new BysImplV(null, new byte[2] { 2, 3 }));
+            NetwImplV.Wrapper wrapper = new NetwImplV.Wrapper(null, null);
+            h.onCmd(null, new BysImplV(wrapper, null, new byte[2] { 0, 1 }));
+            h.onCmd(null, new BysImplV(wrapper, null, new byte[2] { 1, 2 }));
+            h.onCmd(null, new BysImplV(wrapper, null, new byte[2] { 2, 3 }));
             //not found
-            h.onCmd(null, new BysImplV(null, new byte[2] { 3, 4 }));
+            h.onCmd(null, new BysImplV(wrapper, null, new byte[2] { 3, 4 }));
         }
     }
 }

@@ -53,6 +53,10 @@ namespace io.vty.cswf.netw.r
         {
             return bnw.newM(m, off, len);
         }
+        public Bys newM(NetwBase rw, byte[] m, int off, int len)
+        {
+            return bnw.newM(rw, m, off, len);
+        }
 
         public virtual Bys readM()
         {
@@ -98,5 +102,6 @@ namespace io.vty.cswf.netw.r
         {
             bnw.writem(m, off, length);
         }
+
     }
 }

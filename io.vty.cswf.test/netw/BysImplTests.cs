@@ -25,7 +25,7 @@ namespace io.vty.cswf.netw.tests
             {
                 bys.reset(-1, 0);
             }
-            catch (Exception e)
+            catch (Exception)
             {
 
             }
@@ -33,7 +33,7 @@ namespace io.vty.cswf.netw.tests
             {
                 bys.V<Object>();
             }
-            catch (Exception e)
+            catch (Exception)
             {
 
             }
@@ -52,7 +52,7 @@ namespace io.vty.cswf.netw.tests
             public NetwImplT(NetwBase rwb) : base(rwb)
             {
             }
-            public override Bys newM(byte[] m, int off, int len)
+            public override Bys newM(NetwBase rw, byte[] m, int off, int len)
             {
                 return new BysImpl(this, m, off, len);
             }
@@ -71,7 +71,7 @@ namespace io.vty.cswf.netw.tests
             {
                 bys.slice(1000);
             }
-            catch (Exception e)
+            catch (Exception)
             {
 
             }
@@ -79,7 +79,7 @@ namespace io.vty.cswf.netw.tests
             {
                 bys.slice(1000, 1000);
             }
-            catch (Exception e)
+            catch (Exception)
             {
 
             }

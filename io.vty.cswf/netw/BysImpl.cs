@@ -123,6 +123,10 @@ namespace io.vty.cswf.netw
             }
             return true;
         }
+        public override int GetHashCode()
+        {
+            return this.bys.GetHashCode();
+        }
         /// <summary>
         /// convert byte[] to like:[1,3,4];
         /// </summary>
@@ -156,5 +160,9 @@ namespace io.vty.cswf.netw
             return sb.ToString();
         }
 
+        public virtual void writev(object v)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

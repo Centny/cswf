@@ -17,7 +17,7 @@ namespace io.vty.cswf.io.tests
         public void PipeStreamTest()
         {
             var running = true;
-            var ms = new PipeStream(100);
+            var ms = new BytesStream(100);
             new Task<int>(() =>
             {
                 try
@@ -29,7 +29,7 @@ namespace io.vty.cswf.io.tests
                         Console.Write("R-({1})>{0}\n", Util.tos(buf, 0, lenn), lenn);
                     }
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
 
                 }
@@ -64,7 +64,7 @@ namespace io.vty.cswf.io.tests
                 var bys = Util.bytes("abc");
                 ms.Write(bys, 0, bys.Length);
             }
-            catch (Exception e)
+            catch (Exception)
             {
 
             }
@@ -72,14 +72,14 @@ namespace io.vty.cswf.io.tests
             {
                 ms.Position = ms.Position;
             }
-            catch (Exception e)
+            catch (Exception)
             {
 
             }
             try
             {
                 ms.SetLength(0);
-            }catch(Exception e)
+            }catch(Exception)
             {
 
             }
@@ -87,7 +87,7 @@ namespace io.vty.cswf.io.tests
             {
                 ms.Seek(0, System.IO.SeekOrigin.Begin);
             }
-            catch (Exception e)
+            catch (Exception)
             {
 
             }

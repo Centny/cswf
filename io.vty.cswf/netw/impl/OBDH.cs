@@ -20,13 +20,30 @@ namespace io.vty.cswf.netw.impl
         /// </summary>
         private Dictionary<byte, r.CmdListener> hs = new Dictionary<byte, r.CmdListener>();
 
+        protected class Wrapper : NetwImplV
+        {
+            protected NetwRunnerV runner { get; set; }
+            public Wrapper(NetwRunnerV runner, NetwBase rwb) : base(rwb)
+            {
+                this.runner = runner;
+            }
+            public override T B2V<T>(Bys bys)
+            {
+                return this.runner.B2V<T>(bys);
+            }
+
+            public override Bys V2B(Netw nv, object v)
+            {
+                return this.runner.V2B(nv, v);
+            }
+        }
         public void onCmd(NetwRunnable nr, Bys m)
         {
             byte mark = m.get(0);
             if (hs.ContainsKey(mark))
             {
                 m.forward(1);
-                hs[mark].onCmd(nr, m);
+                hs[mark].onCmd(nr, m.newM(new OBDC(m, mark), m.bys, m.offset, m.length));
             }
             else
             {

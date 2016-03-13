@@ -12,6 +12,7 @@ namespace io.vty.cswf.netw
     /// </summary>
     public abstract class NetwRunnerV : NetwRunner, r.Converter
     {
+        public delegate NetwBase NetwBaseBuilder();
         /// <summary>
         /// the wrapper to call runer Converter impl.
         /// </summary>

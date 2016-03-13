@@ -54,7 +54,7 @@ namespace io.vty.cswf.netw.tests
             }
             protected override NetwBase createNetwBase()
             {
-                return new NetwBaseImpl(new PipeStream(100), 102400);
+                return new NetwBaseImpl(new BytesStream(100), 102400);
             }
         }
 
@@ -115,7 +115,7 @@ namespace io.vty.cswf.netw.tests
                 }, i).Start();
             }
             IList<byte[]> bys;
-            IList<Bys> cmds;
+            //IList<Bys> cmds;
             bys= new List<Byte[]>();
             bys.Add(Util.bytes("abc-str-" + 100));
             r.strc.writem(bys);

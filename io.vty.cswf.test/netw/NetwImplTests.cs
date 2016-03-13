@@ -16,7 +16,7 @@ namespace io.vty.cswf.netw.tests
             public NetwImpl_(NetwBase rwb) : base(rwb)
             {
             }
-            public override Bys newM(byte[] m, int off, int len)
+            public override Bys newM(NetwBase rw, byte[] m, int off, int len)
             {
                 throw new NotImplementedException();
             }
@@ -30,7 +30,7 @@ namespace io.vty.cswf.netw.tests
                 IList<byte[]> bys = null;
                 nw.writem(bys);
             }
-            catch (Exception e)
+            catch (Exception)
             {
 
             }

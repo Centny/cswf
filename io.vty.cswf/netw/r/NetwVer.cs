@@ -5,7 +5,7 @@ namespace io.vty.cswf.netw.r
     /// <summary>
     /// Providers interface to write object to stream.
     /// </summary>
-    public interface NetwVer : Netw, Converter
+    public interface NetwVer : Netw
     {
         /// <summary>
         /// write object to stream.

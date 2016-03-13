@@ -29,7 +29,7 @@ namespace io.vty.cswf.netw
         /// </summary>
         /// <param name="stream">base stream</param>
         /// <param name="limit">limit</param>
-        public NetwBaseImpl(Stream stream, int limit)
+        public NetwBaseImpl(Stream stream, int limit = 1024000)
         {
             this.stream = stream;
             this.limit = limit;

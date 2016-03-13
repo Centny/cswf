@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.IO;
 
 namespace io.vty.cswf.util.tests
 {
@@ -25,6 +26,14 @@ namespace io.vty.cswf.util.tests
             Assert.AreEqual(false, Util.equal(bys1, bys2));
             Assert.AreEqual(false, Util.equal(bys1, bys3));
             Assert.AreEqual(true, Util.equal(null, null));
+        }
+
+        [TestMethod()]
+        public void UrlTest()
+        {
+            var uri = new Uri("http://www.baidu.com/abc/index.html?sx=1");
+            Console.WriteLine(uri.AbsolutePath);
+            Console.WriteLine(Path.GetDirectoryName(uri.AbsolutePath));
         }
     }
 }

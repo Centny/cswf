@@ -10,7 +10,7 @@ namespace io.vty.cswf.netw.r
         /// <summary>
         /// the mode head.
         /// </summary>
-        public static readonly byte[] H_MOD = Encoding.Default.GetBytes(new char[3] { '^', '-', '^' });
+        public static readonly byte[] H_MOD = Encoding.Default.GetBytes(new char[3] { '^', '~', '^' });
 
         /// <summary>
         /// valid the mode head.

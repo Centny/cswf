@@ -1,10 +1,10 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
+using System.Web.Script.Serialization;
 
 namespace io.vty.cswf.util
 {
@@ -189,7 +189,7 @@ namespace io.vty.cswf.util
 
             public T parse<T>()
             {
-                return JsonConvert.DeserializeObject<T>(this.Data);
+                return new JavaScriptSerializer().Deserialize<T>(this.Data);
             }
 
             public IDictionary<string,object> toDict()

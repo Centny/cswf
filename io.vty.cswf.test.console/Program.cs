@@ -1,5 +1,4 @@
 ﻿using io.vty.cswf.log;
-using io.vty.cswf.test.log;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +12,7 @@ namespace io.vty.cswf.test.console
     {
         static void Main(string[] args)
         {
-            TestLog.show();
+            //TestLog.show();
             //ILog xx =Log.New();
             //xx.D("xxxss");
             /*
@@ -21,9 +20,9 @@ namespace io.vty.cswf.test.console
             log = LogManager.GetLogger("ssss");
             log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
             log.Error("sddfsf");
-            log.Debug("xxxxkkk");
+           // log.Debug("xxxxkkk");
             */
-            Console.WriteLine("sdsf");
+            //Console.WriteLine("sdsf");
         }
     }
 }

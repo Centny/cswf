@@ -29,7 +29,7 @@ namespace io.vty.cswf.netw.tests
             {
                 bys = null;
                 nb.writeM(bys);
-            }catch(Exception e)
+            }catch(Exception)
             {
 
             }
@@ -39,7 +39,7 @@ namespace io.vty.cswf.netw.tests
                 bys.Add(new BysImpl(null, new byte[1024]));
                 nb.writeM(bys);
             }
-            catch (Exception e)
+            catch (Exception)
             {
 
             }

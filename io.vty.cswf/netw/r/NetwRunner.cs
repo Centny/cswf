@@ -44,6 +44,7 @@ namespace io.vty.cswf.netw.r
                 try
                 {
                     Bys cmd = nw.readM();
+                    String s=cmd.ToString();
                     this.msgl.onCmd(this, cmd);
                 }
                 catch (EOFException e)

@@ -19,7 +19,7 @@ namespace io.vty.cswf.netw.r.tests
             {
 
             }
-            public override Bys newM(byte[] m, int off, int len)
+            public override Bys newM(NetwBase rw, byte[] m, int off, int len)
             {
                 return new BysImpl(this, m, off, len);
             }
@@ -27,7 +27,7 @@ namespace io.vty.cswf.netw.r.tests
         [TestMethod()]
         public void WrapperTests()
         {
-            NetwWrapper nw = new NetwWrapper(new NetwImpl_T(new NetwBaseImpl(new PipeStream(1024), 102400)));
+            NetwWrapper nw = new NetwWrapper(new NetwImpl_T(new NetwBaseImpl(new BytesStream(1024), 102400)));
             byte[] tmp;
             byte[] bys1 = new byte[] { 1, 2, 3, 4 };
             byte[] bys2 = new byte[] { 4, 3, 2, 1 };

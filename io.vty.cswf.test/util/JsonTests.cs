@@ -67,5 +67,11 @@ namespace io.vty.cswf.util.tests
             var res = Json.toDict(json);
             Console.WriteLine(json);
         }
+
+        [TestMethod()]
+        public void StringTest()
+        {
+            Console.WriteLine(Json.stringify("xx"));
+        }
     }
 }

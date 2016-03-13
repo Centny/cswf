@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -7,6 +6,7 @@ using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.Script.Serialization;
 
 namespace io.vty.cswf.util
 {
@@ -23,10 +23,7 @@ namespace io.vty.cswf.util
         /// <returns>object instance</returns>
         public static T parse<T>(byte[] json, int off, int len)
         {
-            using (var ms = new MemoryStream(json, off, len, false))
-            {
-                return (T)new DataContractJsonSerializer(typeof(T)).ReadObject(ms);
-            }
+            return parse<T>(Encoding.UTF8.GetString(json, off, len));
         }
 
         /// <summary>
@@ -48,7 +45,7 @@ namespace io.vty.cswf.util
         /// <returns>object instance</returns>
         public static T parse<T>(string json)
         {
-            return parse<T>(Encoding.Default.GetBytes(json));
+            return new JavaScriptSerializer().Deserialize<T>(json);
         }
 
         /// <summary>
@@ -58,11 +55,7 @@ namespace io.vty.cswf.util
         /// <returns>json string</returns>
         public static byte[] stringify_(object v)
         {
-            using (var ms = new MemoryStream())
-            {
-                new DataContractJsonSerializer(v.GetType()).WriteObject(ms, v);
-                return ms.ToArray();
-            }
+            return Encoding.UTF8.GetBytes(stringify(v));
         }
 
         /// <summary>
@@ -72,12 +65,13 @@ namespace io.vty.cswf.util
         /// <returns>json string</returns>
         public static string stringify(object v)
         {
-            return Encoding.UTF8.GetString(stringify_(v));
+            var type = v.GetType();
+            return new JavaScriptSerializer().Serialize(v);
         }
 
         public static IDictionary<string,object> toDict(string json)
         {
-            return JsonConvert.DeserializeObject<Dictionary<string, object>>(json);
+            return new JavaScriptSerializer().Deserialize<Dictionary<string, object>>(json);
         }
 
     }

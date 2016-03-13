@@ -51,7 +51,11 @@ namespace io.vty.cswf.netw
             }
         }
 
-        public abstract Bys newM(byte[] m, int off, int len);
+        public virtual Bys newM(byte[] m, int off, int len)
+        {
+            return this.newM(this, m, off, len);
+        }
+        public abstract Bys newM(NetwBase rw, byte[] m, int off, int len);
 
         public Bys readM()
         {

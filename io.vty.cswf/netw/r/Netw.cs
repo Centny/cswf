@@ -36,7 +36,7 @@ namespace io.vty.cswf.netw.r
         /// <param name="len">data length.</param>
         /// <returns>command</returns>
         Bys newM(byte[] m, int off, int len);
-
+        Bys newM(NetwBase rw, byte[] m, int off, int len);
         /// <summary>
         /// write one command data to stream.
         /// it will send data by H_MOD|data length|data.

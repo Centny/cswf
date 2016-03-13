@@ -62,6 +62,7 @@
     <Compile Include="netw\impl\OBDHTests.cs" />
     <Compile Include="netw\impl\QueueHTests.cs" />
     <Compile Include="netw\impl\TaskHTests.cs" />
+    <Compile Include="netw\rc\NetwRunnerV_jTest.cs" />
     <Compile Include="netw\NetwBaseImplTests.cs" />
     <Compile Include="netw\NetwImplTests.cs" />
     <Compile Include="netw\NetwRunnerV_jTests.cs" />
@@ -74,6 +75,7 @@
     <Compile Include="util\JsonTests.cs" />
     <Compile Include="util\ExecTests.cs" />
     <Compile Include="util\HTest.cs" />
+    <Compile Include="util\FCfgTest.cs" />
     <Compile Include="util\UtilTests.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -111,6 +113,10 @@
   </Choose>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>mkdir test
+xcopy /y/e/h ..\..\test test</PostBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
