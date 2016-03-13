@@ -96,7 +96,7 @@ namespace io.vty.cswf.netw.tests
             var r = new Runner(null, this, 21);
             new Task<int>(() =>
             {
-                r.run_c();
+                r.runc(r.doCon());
                 Console.WriteLine("R->end");
                 this.cdl.done();
                 return 0;

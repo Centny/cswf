@@ -19,7 +19,18 @@ namespace io.vty.cswf.netw.sck
             this.Addr = addr;
             this.Port = port;
         }
-        public NetwBase Dail()
+        public SckDailer(string addr)
+        {
+            var ads = addr.Split(':');
+            if (ads.Length < 2)
+            {
+                throw new Exception(String.Format("the address({0}) is invalid", addr));
+            }
+            this.Addr = ads[0];
+            this.Addr = addr;
+            this.Port = short.Parse(ads[1]);
+        }
+        public virtual NetwBase Dail()
         {
             L.D("Sck start connect to server({0}:{1}", this.Addr, this.Port);
             TcpClient client = new TcpClient();

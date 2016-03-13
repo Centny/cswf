@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Web;
 
 namespace io.vty.cswf.util
@@ -99,9 +100,10 @@ namespace io.vty.cswf.util
                 }
                 catch (Exception e)
                 {
-                    Console.WriteLine("FCfg load file({0}) faile with {0}", file, e.Message);
+                    Console.WriteLine("FCfg load file({0}) faile with {1}", file, e.Message);
                     if (wait)
                     {
+                        Thread.Sleep(5000);
                         continue;
                     }
                     else
@@ -145,6 +147,7 @@ namespace io.vty.cswf.util
                     Console.WriteLine("FCfg load uri({0}) faile with {0}", uri, e.Message);
                     if (wait)
                     {
+                        Thread.Sleep(5000);
                         continue;
                     }
                     else

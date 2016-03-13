@@ -32,33 +32,44 @@ namespace io.vty.cswf.netw.r
             this.evnl = evn;
         }
 
-        public virtual void run_c()
+        public virtual Netw doCon()
         {
-            L.Debug("starting running Netw");
             this.evnl.begCon(this);
             Netw nw = this.createNetw();
             this.evnl.onCon(this, nw);
-            this.running = true;
-            while (this.running)
+            return nw;
+        }
+        public virtual void runc(Netw nw)
+        {
+            L.Debug("starting running Netw");
+            try
             {
-                try
+                this.running = true;
+                while (this.running)
                 {
-                    Bys cmd = nw.readM();
-                    String s=cmd.ToString();
-                    this.msgl.onCmd(this, cmd);
+                    try
+                    {
+                        Bys cmd = nw.readM();
+                        String s = cmd.ToString();
+                        this.msgl.onCmd(this, cmd);
+                    }
+                    catch (EOFException e)
+                    {
+                        this.evnl.onErr(this, e);
+                        this.running = false;
+                    }
+                    catch (Exception e)
+                    {
+                        this.evnl.onErr(this, e);
+                    }
                 }
-                catch (EOFException e)
-                {
-                    this.evnl.onErr(this, e);
-                    this.running = false;
-                }
-                catch (Exception e)
-                {
-                    this.evnl.onErr(this, e);
-                }
+                this.running = false;
+                L.Debug("Netw stopped");
             }
-            this.running = false;
-            L.Debug("Netw stopped");
+            catch (Exception e)
+            {
+                L.Error(String.Format("NetwRunner run fail with {0}", e.Message), e);
+            }
             this.evnl.endCon(this);
         }
 

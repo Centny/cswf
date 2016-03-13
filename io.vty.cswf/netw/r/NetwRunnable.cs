@@ -13,6 +13,6 @@
         /// <summary>
         /// run read on stream.
         /// </summary>
-        void run_c();
+        void runc(Netw nw);
     }
 }

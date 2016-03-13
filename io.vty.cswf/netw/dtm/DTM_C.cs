@@ -6,6 +6,8 @@ using io.vty.cswf.netw.impl;
 using io.vty.cswf.log;
 using io.vty.cswf.util;
 using System.Diagnostics;
+using io.vty.cswf.netw.http;
+using System.Web;
 
 namespace io.vty.cswf.netw.dtm
 {
@@ -16,6 +18,7 @@ namespace io.vty.cswf.netw.dtm
         private static readonly ILog L = Log.New();
 
         public FCfg Cfg;
+        public Server Srv;
         public IDictionary<String, Process> Tasks
         {
             get;
@@ -25,9 +28,11 @@ namespace io.vty.cswf.netw.dtm
         {
             this.Tasks = new Dictionary<String, Process>();
             this.Cfg = cfg;
+            this.Srv = new Server();
             this.addH("start_task", this.StartTask);
             this.addH("wait_task", this.WaitTask);
             this.addH("stop_task", this.StopTask);
+            this.Srv.AddF("^/proc(\\?.*)?",this.OnProc);
         }
         protected virtual void AddTask(String tid, Process proc)
         {
@@ -221,6 +226,63 @@ namespace io.vty.cswf.netw.dtm
         protected virtual void SendDone(Object args)
         {
             this.MsgC.writev(new BysImpl(null, new byte[] { CMD_M_DONE }), args);
+        }
+
+        public virtual void NotifyProc(String tid, float rate)
+        {
+            var args = Util.NewDict();
+            args["tid"] = tid;
+            args["rate"] = rate;
+            this.MsgC.writev(new BysImpl(null, new byte[] { CMD_M_PROC }), args);
+        }
+
+        public virtual HResult OnProc(Request r)
+        {
+            var args = HttpUtility.ParseQueryString(r.req.Url.Query);
+            var tid = args.Get("tid");
+            var key = this.Cfg.Val("proc_key", "progess");
+            var rate_ = args.Get(key);
+            if (String.IsNullOrWhiteSpace(tid) || String.IsNullOrWhiteSpace(rate_))
+            {
+                r.res.StatusCode = 400;
+                r.WriteLine("the tid/{0} is required", key);
+                return HResult.HRES_RETURN;
+            }
+            float rate = 0;
+            if (float.TryParse(rate_, out rate))
+            {
+                this.NotifyProc(tid, rate);
+                r.res.StatusCode = 200;
+                r.WriteLine("OK");
+            }
+            else
+            {
+                r.res.StatusCode = 400;
+                r.WriteLine("the {0} must be float", key);
+            }
+            return HResult.HRES_RETURN;
+        }
+
+        public virtual void StartProcSrv()
+        {
+            var prefixes_ = this.Cfg.Val("proc_prefixes", "");
+            if (prefixes_.Length < 1)
+            {
+                L.E("DTM_C run process handler faile with prefixes is empty");
+                return;
+            }
+            L.I("DTM_C start process server by prefixes({0})", prefixes_);
+            var prefixes = prefixes_.Split(new char[] { ',' });
+            foreach(var prefix in prefixes)
+            {
+                this.Srv.AddPrefix(prefix);
+            }
+            this.Srv.Start();
+        }
+
+        public virtual void StopProcSrv()
+        {
+            this.Srv.Stop();
         }
     }
 }

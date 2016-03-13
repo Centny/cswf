@@ -60,6 +60,7 @@
     <Compile Include="log\LogTests.cs" />
     <Compile Include="netw\BysImplTests.cs" />
     <Compile Include="netw\dtm\DTM_C_jTest.cs" />
+    <Compile Include="netw\http\ServeTest.cs" />
     <Compile Include="netw\impl\OBDHTests.cs" />
     <Compile Include="netw\impl\QueueHTests.cs" />
     <Compile Include="netw\impl\TaskHTests.cs" />

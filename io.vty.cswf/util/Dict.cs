@@ -195,7 +195,8 @@ namespace io.vty.cswf.util
             var kvsl = new Dict();
             foreach (var arg in args)
             {
-                var kvs = arg.Split('=');
+                var varg = arg.Trim();
+                var kvs = varg.Split('=');
                 if (kvs.Length > 1)
                 {
                     kvsl[kvs[0]] = kvs[1];

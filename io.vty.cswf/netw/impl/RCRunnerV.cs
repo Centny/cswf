@@ -17,10 +17,11 @@ namespace io.vty.cswf.netw.impl
         //public delegate NetwBase DailF(RCRunnerV rc);
         //
         //public DailF Dail;
-        public int Delay;
+        public int Delay = 8000;
         public string Name;
         public bool Running;
         protected AutoResetEvent lck = new AutoResetEvent(false);
+        protected AutoResetEvent r_lck = new AutoResetEvent(false);//runner lock
         public int Connected
         {
             [MethodImpl(MethodImplOptions.Synchronized)]
@@ -51,6 +52,10 @@ namespace io.vty.cswf.netw.impl
             this.Timeout();
             L.D("RC({0}) Runner is stopping", this.Name);
         }
+        public virtual void Wait()
+        {
+            this.r_lck.WaitOne();
+        }
         public virtual void begCon(NetwRunnable nr)
         {
         }
@@ -67,6 +72,7 @@ namespace io.vty.cswf.netw.impl
             else
             {
                 L.W("RC({0} connction is closed, Runner will stop", this.Name);
+                this.r_lck.Set();
             }
         }
 
@@ -99,6 +105,7 @@ namespace io.vty.cswf.netw.impl
                 if (now - last < this.Delay)
                 {
                     L.D("RC({0}) will retry connect to server after {1} ms", this.Name, this.Delay);
+                    Thread.Sleep(this.Delay);
                 }
                 last = now;
             }

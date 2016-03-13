@@ -52,6 +52,9 @@
     <Compile Include="netw\BysImplV.cs" />
     <Compile Include="netw\dtm\DTM_C.cs" />
     <Compile Include="netw\dtm\DTM_C_j.cs" />
+    <Compile Include="netw\http\HResult.cs" />
+    <Compile Include="netw\http\Request.cs" />
+    <Compile Include="netw\http\Server.cs" />
     <Compile Include="netw\impl\RCM_Cmd.cs" />
     <Compile Include="netw\impl\DoNoneH.cs" />
     <Compile Include="netw\impl\ExecHm.cs" />

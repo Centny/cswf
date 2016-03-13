@@ -27,7 +27,7 @@ namespace io.vty.cswf.netw.dtm
         public override NetwRunnerV createRunner(OBDH h)
         {
             NetwRunnerV runner = new Wrapper(this, h, this);
-            new Task(i => runner.run_c(), 0, TaskCreationOptions.LongRunning).Start();
+            new Task(con => runner.runc(con as Netw), runner.doCon(), TaskCreationOptions.LongRunning).Start();
             return runner;
         }
         protected class Wrapper : NetwRunnerV_j
