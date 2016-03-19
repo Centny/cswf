@@ -75,5 +75,12 @@ namespace io.vty.cswf.util
                 Monitor.Pulse(this);
             }
         }
+        public virtual void add()
+        {
+            lock (this)
+            {
+                this.count++;
+            }
+        }
     }
 }
