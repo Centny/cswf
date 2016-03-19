@@ -14,7 +14,7 @@ namespace io.vty.cswf.util
             Process proc = new Process();
             proc.StartInfo.UseShellExecute = false;
             proc.StartInfo.FileName = exe;
-            proc.StartInfo.Arguments = string.Join(" ", args);
+            proc.StartInfo.Arguments = Join(args);
             proc.StartInfo.RedirectStandardOutput = true;
             proc.StartInfo.RedirectStandardError = true;
             proc.StartInfo.CreateNoWindow = true;
@@ -40,6 +40,28 @@ namespace io.vty.cswf.util
             return proc.ExitCode;
         }
 
+        public static String Join(String[] args, int idx = 0, int len = -1)
+        {
+            if (len < 0)
+            {
+                len = args.Length - idx;
+            }
+            StringBuilder sb = new StringBuilder();
+            for (var i=0;i< len;i++)
+            {
+                var arg = args[idx + i];
+                if (arg.Contains(' '))
+                {
+                    sb.AppendFormat("'{0}'", arg);
+                }
+                else
+                {
+                    sb.Append(arg);
+                }
+                sb.Append(" ");
+            }
+            return sb.ToString();
+        }
         public static int exec(out string output, string cmds)
         {
             if (String.IsNullOrWhiteSpace(cmds))
