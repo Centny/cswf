@@ -75,6 +75,15 @@ namespace io.vty.cswf.util
                         found += 1;
                     }
                 }
+                var unknow = new HashSet<int>();
+                foreach (var pid in this.Running)
+                {
+                    if (procs.ContainsKey(pid))
+                    {
+                        continue;
+                    }
+                    unknow.Add(pid);
+                }
                 var removed = new HashSet<int>();
                 foreach (var oid in this.Last)
                 {
@@ -107,8 +116,8 @@ namespace io.vty.cswf.util
                 {
                     this.Last.Remove(rm);
                 }
-                L.I("ProcKiller do clear process({5}) success by found({0}),unmonitered({1}),killed({2}),monitered({3}),running({4})",
-                    found, unmonitered, killed, monitered, this.Running.Count, this.Names);
+                L.I("ProcKiller do clear process({5}) success by found({0}),unmonitered({1}),killed({2}),monitered({3}),running({4})\n unknow({6}):{7}\n",
+                    found, unmonitered, killed, monitered, this.Running.Count, string.Join(",", this.Names), unknow.Count, string.Join(",", unknow));
             }
             catch (Exception e)
             {
