@@ -49,7 +49,7 @@ namespace io.vty.cswf.util
                 return false;
             }
         }
-        public bool FloatVal(string key, out float val, int defaultv = 0)
+        public bool FloatVal(string key, out float val, float defaultv = 0)
         {
             if (this.Kvs.ContainsKey(key))
             {
@@ -61,11 +61,35 @@ namespace io.vty.cswf.util
                 return false;
             }
         }
-        public bool FloatVal(int idx, out float val, int defaultv = 0)
+        public bool FloatVal(int idx, out float val, float defaultv = 0)
         {
             if (idx >= 0 && idx < this.Vals.Count)
             {
                 return float.TryParse(this.Vals[idx], out val);
+            }
+            else
+            {
+                val = defaultv;
+                return false;
+            }
+        }
+        public bool DoubleVal(string key, out double val, double defaultv = 0)
+        {
+            if (this.Kvs.ContainsKey(key))
+            {
+                return double.TryParse(this.Kvs[key], out val);
+            }
+            else
+            {
+                val = defaultv;
+                return false;
+            }
+        }
+        public bool DoubleVal(int idx, out double val, double defaultv = 0)
+        {
+            if (idx >= 0 && idx < this.Vals.Count)
+            {
+                return double.TryParse(this.Vals[idx], out val);
             }
             else
             {
