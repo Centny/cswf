@@ -295,5 +295,9 @@ namespace io.vty.cswf.util
             tcfg.Secs = new HashSet<string>(this.Secs);
             return tcfg;
         }
+        public virtual void Print()
+        {
+            Console.WriteLine(this);
+        }
     }
 }
