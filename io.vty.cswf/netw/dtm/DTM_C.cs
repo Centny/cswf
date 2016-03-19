@@ -134,20 +134,21 @@ namespace io.vty.cswf.netw.dtm
             var cfg = this.Cfg.Clone();
             cfg["loc/proc_tid"] = tid;
             cmds = cfg.EnvReplaceV(cmds, false);
+            L.I("DTM_C do command(\n{0}\n) by tid({1})", cmds, tid);
             this.DoCmd(tid, cfg, cmds);
         }
         public virtual void DoCmd(String tid, FCfg cfg, String cmds)
         {
             var beg = Util.Now();
-            L.I("DTM_C calling command(\n{0}\n) by tid({1})", cmds, tid);
             var args = Exec.ParseArgs(cmds);
+            L.I("DTM_C calling command(\n{0}\n) by tid({1})", cmds, tid);
             StringBuilder sb = new StringBuilder();
             Process proc = new Process();
             proc.StartInfo.UseShellExecute = false;
             proc.StartInfo.FileName = args[0];
             if (args.Length > 1)
             {
-                proc.StartInfo.Arguments = string.Join(" ", args, 1, args.Length - 1);
+                proc.StartInfo.Arguments = Exec.Join(args, 1, args.Length - 1);
             }
             proc.StartInfo.RedirectStandardOutput = true;
             proc.StartInfo.RedirectStandardError = true;
