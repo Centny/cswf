@@ -88,10 +88,17 @@ namespace io.vty.cswf.netw.impl
 
         public virtual void Try()
         {
-            long last = util.Util.Now();
+            long last = 0;
             long now = 0;
             while (this.Running)
             {
+                now = util.Util.Now();
+                if (now - last < this.Delay)
+                {
+                    L.D("RC({0}) will retry connect to server after {1} ms", this.Name, this.Delay);
+                    Thread.Sleep(this.Delay);
+                }
+                last = now;
                 try
                 {
                     this.DailRunner();
@@ -101,13 +108,6 @@ namespace io.vty.cswf.netw.impl
                 {
                     L.E("RC({0}) dail to server fail with {1}", this.Name, e.Message);
                 }
-                now = util.Util.Now();
-                if (now - last < this.Delay)
-                {
-                    L.D("RC({0}) will retry connect to server after {1} ms", this.Name, this.Delay);
-                    Thread.Sleep(this.Delay);
-                }
-                last = now;
             }
         }
 

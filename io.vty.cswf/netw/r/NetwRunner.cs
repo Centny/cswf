@@ -1,6 +1,7 @@
 ﻿using System;
 using log4net;
 using System.Threading;
+using System.IO;
 
 namespace io.vty.cswf.netw.r
 {
@@ -54,6 +55,11 @@ namespace io.vty.cswf.netw.r
                         this.msgl.onCmd(this, cmd);
                     }
                     catch (EOFException e)
+                    {
+                        this.evnl.onErr(this, e);
+                        this.running = false;
+                    }
+                    catch (IOException e)
                     {
                         this.evnl.onErr(this, e);
                         this.running = false;
