@@ -37,6 +37,18 @@ namespace io.vty.cswf.util
                 return false;
             }
         }
+        public bool IntVal(int idx, out int val, int defaulv = 0)
+        {
+            if (idx >= 0 && idx < this.Vals.Count)
+            {
+                return int.TryParse(this.Vals[idx], out val);
+            }
+            else
+            {
+                val = defaulv;
+                return false;
+            }
+        }
         public bool FloatVal(string key, out float val, int defaultv = 0)
         {
             if (this.Kvs.ContainsKey(key))
@@ -49,11 +61,36 @@ namespace io.vty.cswf.util
                 return false;
             }
         }
+        public bool FloatVal(int idx, out float val, int defaultv = 0)
+        {
+            if (idx >= 0 && idx < this.Vals.Count)
+            {
+                return float.TryParse(this.Vals[idx], out val);
+            }
+            else
+            {
+                val = defaultv;
+                return false;
+            }
+        }
         public bool StringVal(string key, out string val, string defaultv = "")
         {
             if (this.Kvs.ContainsKey(key))
             {
                 val = this.Kvs[key];
+            }
+            else
+            {
+                val = defaultv;
+            }
+            return val.Length > 0;
+        }
+
+        public bool StringVal(int idx, out string val, string defaultv = "")
+        {
+            if (idx >= 0 && idx < this.Vals.Count)
+            {
+                val = this.Vals[idx];
             }
             else
             {
@@ -145,6 +182,28 @@ namespace io.vty.cswf.util
         public static Args parseArgs(string[] nkv, string[] args, int beg = 0)
         {
             return new Args(nkv).parse(args, beg);
+        }
+
+        public static Args parseArgs(string[] nkv, string args, int beg = 0)
+        {
+            return parseArgs(nkv, Exec.ParseArgs(args), beg);
+        }
+        public static Args parseArgs(string args, bool isAllVals = true, int beg = 0)
+        {
+            var argsL = Exec.ParseArgs(args);
+            if (isAllVals)
+            {
+                var argsR = new Args(new string[] { });
+                foreach (var arg in argsL)
+                {
+                    argsR.Vals.Add(arg);
+                }
+                return argsR;
+            }
+            else
+            {
+                return parseArgs(argsL, beg);
+            }
         }
     }
 }
