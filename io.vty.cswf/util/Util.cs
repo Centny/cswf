@@ -150,5 +150,13 @@ namespace io.vty.cswf.util
             thumb_b.Save(spath, enc, args);
             thumb_b.Dispose();
         }
+
+        public static void set<T>(T[] data, T val)
+        {
+            for (var i = 0; i < data.Length; i++)
+            {
+                data[i] = val;
+            }
+        }
     }
 }
