@@ -59,6 +59,7 @@ namespace io.vty.cswf.test.netw.dtm
             tres = new Dict(res);
             Console.WriteLine(Json.stringify(res));
             Assert.AreEqual(0, tres.Val("code", -1));
+            Assert.AreEqual(tid, tres.Val("tid", ""));
             //
             args["cmds"] = "test/dtm_json_err.bat abc";
             res = dtmc.StartTask(cmd) as Dictionary<String, object>;
@@ -74,6 +75,7 @@ namespace io.vty.cswf.test.netw.dtm
             tres = new Dict(res);
             Console.WriteLine(Json.stringify(res));
             Assert.AreNotEqual(0, tres.Val("code", 0));
+            Assert.AreEqual(tid, tres.Val("tid", ""));
             //
             //
             args["cmds"] = "sdfkfk";
@@ -81,12 +83,14 @@ namespace io.vty.cswf.test.netw.dtm
             tres = new Dict(res);
             Console.WriteLine(Json.stringify(res));
             Assert.AreNotEqual(0, tres.Val("code", 0));
+            //Assert.AreEqual(tid, tres.Val("tid", ""));
             //
             args["cmds"] = "";
             res = dtmc.StartTask(cmd) as Dictionary<String, object>;
             tres = new Dict(res);
             Console.WriteLine(Json.stringify(res));
             Assert.AreNotEqual(0, tres.Val("code", 0));
+            //Assert.AreEqual(tid, tres.Val("tid", ""));
             Console.WriteLine("Done...");
         }
 

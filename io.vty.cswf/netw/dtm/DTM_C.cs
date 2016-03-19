@@ -32,7 +32,8 @@ namespace io.vty.cswf.netw.dtm
             this.addH("start_task", this.StartTask);
             this.addH("wait_task", this.WaitTask);
             this.addH("stop_task", this.StopTask);
-            this.Srv.AddF("^/proc(\\?.*)?",this.OnProc);
+            this.Srv.AddF("^/proc(\\?.*)?", this.OnProc);
+            this.Token = cfg.Val("token", "");
         }
         protected virtual void AddTask(String tid, Process proc)
         {
@@ -63,6 +64,7 @@ namespace io.vty.cswf.netw.dtm
             {
                 res["code"] = -2;
                 res["err"] = String.Format("DTM_C start command fail with {0}", e.Message);
+                L.E(e, "DTM_C start command(\n{0}\n) fail with error {1}", cmds, e.Message);
             }
             return res;
         }
@@ -128,11 +130,15 @@ namespace io.vty.cswf.netw.dtm
 
         public virtual void RunCmd(String tid, String cmds)
         {
-            var beg = Util.Now();
             L.I("DTM_C running command(\n{0}\n) by tid({1})", cmds, tid);
             var cfg = this.Cfg.Clone();
             cfg["loc/proc_tid"] = tid;
             cmds = cfg.EnvReplaceV(cmds, false);
+            this.DoCmd(tid, cfg, cmds);
+        }
+        public virtual void DoCmd(String tid, FCfg cfg, String cmds)
+        {
+            var beg = Util.Now();
             L.I("DTM_C calling command(\n{0}\n) by tid({1})", cmds, tid);
             var args = Exec.ParseArgs(cmds);
             StringBuilder sb = new StringBuilder();
@@ -190,6 +196,7 @@ namespace io.vty.cswf.netw.dtm
                     rargs["err"] = String.Format("exit code is {0}", proc.ExitCode);
                 }
                 rargs["used"] = used;
+                rargs["tid"] = tid;
                 this.DelTask(tid);
                 this.SendDone(rargs);
 
@@ -273,7 +280,7 @@ namespace io.vty.cswf.netw.dtm
             }
             L.I("DTM_C start process server by prefixes({0})", prefixes_);
             var prefixes = prefixes_.Split(new char[] { ',' });
-            foreach(var prefix in prefixes)
+            foreach (var prefix in prefixes)
             {
                 this.Srv.AddPrefix(prefix);
             }

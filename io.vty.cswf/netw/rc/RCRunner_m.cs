@@ -37,23 +37,18 @@ namespace io.vty.cswf.netw.rc
             this.Connected = 0;
             this.obdh = new OBDH();
             this.Runner = this.createRunner(this.obdh);
-        }
-
-        public override void onCon(NetwRunnable nr, Netw w)
-        {
-            base.onCon(nr, w);
-            this.Exec_ = new ExecCm(new NetwImplV.Wrapper(this.Runner, new OBDC(w, CMD_S)), this.Runner);
+            this.Exec_ = new ExecCm(new NetwImplV.Wrapper(this.Runner, new OBDC(this.Runner.netw, CMD_S)), this.Runner);
             obdh.addh(CMD_S, this.Exec_);
             //
             obdh.addh(CMD_C, new ExecH(this.HM));
             //
             obdh.addh(MSG_C, this.H);
             //
-            this.MsgC = new NetwImplV.Wrapper(this.Runner, new OBDC(w, MSG_S));
+            this.MsgC = new NetwImplV.Wrapper(this.Runner, new OBDC(this.Runner.netw, MSG_S));
             //
             this.Connected = 1;
             this.lck.Set();
-            //
+            this.CallLogin();
         }
 
         public virtual void CallLogin()
@@ -69,22 +64,23 @@ namespace io.vty.cswf.netw.rc
 
                     this.Login(this.Token);
                 }
-                catch (Exception)
+                catch (Exception e)
                 {
+                    L.E(e, "RC({0}) Runner login by token({1}) faile with error({1})", this.Name, this.Token, e.Message);
                 }
-            }, 0);
+            }, 0).Start();
         }
         public virtual void Login(string token)
         {
-            L.D("RC({0}) Runner login by token({0})", this.Name, this.Token);
+            L.D("RC({0}) Runner login by token({1})", this.Name, this.Token);
             var res = this.vexec_m("login_", Util.dict("token", token));
             if (res.Val("code", -1) == 0)
             {
-                L.D("RC({0}) Runner login by token({0}) success", this.Name, this.Token);
+                L.D("RC({0}) Runner login by token({1}) success", this.Name, this.Token);
             }
             else
             {
-                L.E("RC({0}) Runner login by token({0}) faile with error({1})", this.Name, this.Token, res.Val("err", ""));
+                L.E("RC({0}) Runner login by token({1}) faile with error({1})", this.Name, this.Token, res.Val("err", ""));
                 throw new Exception(res.Val("err", ""));
             }
         }

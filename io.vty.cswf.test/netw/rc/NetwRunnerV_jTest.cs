@@ -22,7 +22,7 @@ namespace io.vty.cswf.test.netw.rc
         [TestMethod]
         public void TestRunner()
         {
-            RCRunner_m_j rc = new RCRunner_m_j("Test", new SckDailer("127.0.0.1", 13424).Dail);
+            RCRunner_m_j rc = new RCRunner_m_j("Test", new SckDailer("192.168.2.57", 2012).Dail);
             rc.addH("c_arg", cmd=>
             {
                 return cmd.data;
