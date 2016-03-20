@@ -233,6 +233,7 @@ namespace io.vty.cswf.netw.dtm
         }
         protected virtual void SendDone(Object args)
         {
+            L.D("DTM_C sending done with data->\n{0}", Json.stringify(args));
             this.MsgC.writev(new BysImpl(null, new byte[] { CMD_M_DONE }), args);
         }
 
