@@ -17,9 +17,11 @@ var rcs *rc.RC_Listener_m
 func main() {
 	runtime.GOMAXPROCS(util.CPU())
 	netw.ShowLog = true
-	netw.ShowLog_C = true
-	impl.ShowLog = true
-	rcs = rc.NewRC_Listener_m_j(pool.BP, ":13424", netw.NewDoNotH())
+	//netw.ShowLog_C = true
+	//impl.ShowLog = true
+	dnh:=netw.NewDoNotH()
+	dnh.ShowLog=true
+	rcs = rc.NewRC_Listener_m_j(pool.BP, ":13424", dnh)
 	rcs.AddToken3("abc", 1)
 	rcs.AddHFunc("args_s", Args_s)
 	rcs.AddHFunc("args_m", Args_m)

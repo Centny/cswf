@@ -83,6 +83,8 @@
     <Compile Include="util\FCfgTest.cs" />
     <Compile Include="util\TaskPoolTest.cs" />
     <Compile Include="util\ProcKillerTest.cs" />
+    <Compile Include="util\JsonConverterTest.cs" />
+    <Compile Include="util\DictTest.cs" />
     <Compile Include="util\UtilTests.cs" />
   </ItemGroup>
   <ItemGroup>

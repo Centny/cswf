@@ -98,6 +98,7 @@
     <Compile Include="netw\NetwImplV.cs" />
     <Compile Include="netw\NetwRunner.cs" />
     <Compile Include="netw\NetwRunnerV.cs" />
+    <Compile Include="util\M2S.cs" />
     <Compile Include="netw\NetwRunnerV_j.cs" />
     <Compile Include="netw\rc\RCRunner_m.cs" />
     <Compile Include="netw\rc\RCRunner_m_j.cs" />
@@ -125,6 +126,7 @@
     <Compile Include="util\FCfg.cs" />
     <Compile Include="util\H.cs" />
     <Compile Include="util\Json.cs" />
+    <Compile Include="util\JsonConverter.cs" />
     <Compile Include="util\ProcKiller.cs" />
     <Compile Include="util\TaskPool.cs" />
     <Compile Include="util\Util.cs" />

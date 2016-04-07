@@ -158,5 +158,31 @@ namespace io.vty.cswf.util
                 data[i] = val;
             }
         }
+
+        public static bool IsOrignialType(Type t)
+        {
+            return t.FullName.StartsWith("System.") &&
+                !t.FullName.StartsWith("System.Collections")&&
+                !t.FullName.EndsWith("[]");
+        }
+
+        public static bool IsImpl(Type type,Type impl)
+        {
+            foreach(var i in type.GetInterfaces())
+            {
+                if (i == impl)
+                {
+                    return true;
+                }
+                if (i.IsGenericTypeDefinition)
+                {
+                    if (i.GetGenericTypeDefinition() == impl)
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
     }
 }

@@ -6,13 +6,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Runtime.Serialization;
+using System.Web.Script.Serialization;
 
 namespace io.vty.cswf.util.tests
 {
     [TestClass()]
     public class JsonTests
     {
-        [DataContract]
         public class ObjA
         {
             public ObjA()
@@ -24,21 +24,20 @@ namespace io.vty.cswf.util.tests
                 this.A = a;
                 this.B = b;
             }
-            [DataMember(Name = "a")]
+            [M2S(Name = "a")]
             public string A { get; set; }
 
-            [DataMember(Name = "b")]
+            [M2S(Name = "b")]
             public string B { get; set; }
         }
 
-        [DataContract]
         public class ObjB
         {
             public ObjB()
             {
                 this.As = new List<ObjA>();
             }
-            [DataMember(Name = "as")]
+            [M2S(Name = "as")]
             public IList<ObjA> As { get; set; }
         }
 
@@ -51,8 +50,12 @@ namespace io.vty.cswf.util.tests
             string json = Json.stringify(b);
             Console.WriteLine(json);
             //
-            b = Json.parse<ObjB>(json);
-            Console.WriteLine(b.As[1].A);
+            var js = new JavaScriptSerializer();
+            js.RegisterConverters(new JavaScriptConverter[] { new JsonConverter(new Type[] { typeof(ObjA), typeof(ObjB) }) });
+            ObjB b2 = js.Deserialize<ObjB>(json);
+            //b = Json.parse<ObjB>(json);
+            Assert.AreEqual(b.As[0].A, b2.As[0].A);
+            Assert.AreEqual(b.As[1].A, b2.As[1].A);
         }
 
         [TestMethod()]

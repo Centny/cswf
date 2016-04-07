@@ -22,7 +22,7 @@ namespace io.vty.cswf.test.netw.rc
         [TestMethod]
         public void TestRunner()
         {
-            RCRunner_m_j rc = new RCRunner_m_j("Test", new SckDailer("192.168.2.57", 2012).Dail);
+            RCRunner_m_j rc = new RCRunner_m_j("Test", new SckDailer("127.0.0.1", 13424).Dail);
             rc.addH("c_arg", cmd=>
             {
                 return cmd.data;
@@ -60,6 +60,8 @@ namespace io.vty.cswf.test.netw.rc
                 args["name"] = "xx";
                 data_c = rc.vexec_m("call_c", args);
                 Assert.AreEqual(true, data_c.Val("err", "").Length > 0);
+                //
+                rc.MsgC.writev(Util.dict("a", "1"));
             }
             catch(Exception e)
             {

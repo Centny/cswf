@@ -45,7 +45,8 @@ namespace io.vty.cswf.util
         /// <returns>object instance</returns>
         public static T parse<T>(string json)
         {
-            return new JavaScriptSerializer().Deserialize<T>(json);
+            var js = JsonConverter.CreateJavaScriptSerializer<T>();
+            return js.Deserialize<T>(json);
         }
 
         /// <summary>
@@ -66,10 +67,11 @@ namespace io.vty.cswf.util
         public static string stringify(object v)
         {
             var type = v.GetType();
-            return new JavaScriptSerializer().Serialize(v);
+            var js = JsonConverter.CreateJavaScriptSerializer(type);
+            return js.Serialize(v);
         }
 
-        public static IDictionary<string,object> toDict(string json)
+        public static IDictionary<string, object> toDict(string json)
         {
             return new JavaScriptSerializer().Deserialize<Dictionary<string, object>>(json);
         }
