@@ -67,7 +67,7 @@ namespace io.vty.cswf.util
         public static string stringify(object v)
         {
             var type = v.GetType();
-            var js = JsonConverter.CreateJavaScriptSerializer(type);
+            var js = JsonConverter.CreateJavaScriptSerializer(v);
             return js.Serialize(v);
         }
 

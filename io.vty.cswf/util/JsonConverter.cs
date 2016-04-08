@@ -15,6 +15,12 @@ namespace io.vty.cswf.util
             js.RegisterConverters(new JavaScriptConverter[] { JsonConverter.createConverter(type) });
             return js;
         }
+        public static JavaScriptSerializer CreateJavaScriptSerializer(object obj)
+        {
+            var js = new JavaScriptSerializer();
+            js.RegisterConverters(new JavaScriptConverter[] { JsonConverter.createConverter(obj) });
+            return js;
+        }
         public static JavaScriptSerializer CreateJavaScriptSerializer<T>()
         {
             return CreateJavaScriptSerializer(typeof(T));
@@ -27,6 +33,10 @@ namespace io.vty.cswf.util
         {
             return new JsonConverter(ListTypes(type));
         }
+        public static JsonConverter createConverter(object obj)
+        {
+            return new JsonConverter(ListTypes(obj));
+        }
         public static JavaScriptSerializer createSerializer<T>()
         {
             var ss = new JavaScriptSerializer();
@@ -38,6 +48,43 @@ namespace io.vty.cswf.util
             var ss = new JavaScriptSerializer();
             ss.RegisterConverters(new JavaScriptConverter[] { createConverter(type) });
             return ss;
+        }
+        public static List<Type> ListTypes(List<Type> types, object obj)
+        {
+            var type = obj.GetType();
+            if (Util.IsImpl(type, typeof(IDictionary)))
+            {
+                foreach (var val in (obj as IDictionary).Values)
+                {
+                    if (val == null)
+                    {
+                        continue;
+                    }
+                    ListTypes(types, val);
+                }
+            }
+            else if (Util.IsImpl(type, typeof(IEnumerable)))
+            {
+                foreach (var val in (obj as IEnumerable))
+                {
+                    if (val == null)
+                    {
+                        continue;
+                    }
+                    ListTypes(types, val);
+                }
+            }
+            else
+            {
+                ListTypes(types, type);
+            }
+            return types;
+        }
+        public static List<Type> ListTypes(object obj)
+        {
+            List<Type> types = new List<Type>();
+            ListTypes(types, obj);
+            return types;
         }
         public static List<Type> ListTypes<T>()
         {
