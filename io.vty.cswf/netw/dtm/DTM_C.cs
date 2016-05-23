@@ -209,7 +209,8 @@ namespace io.vty.cswf.netw.dtm
             var res_a = res.Split(new string[] { "----------------result----------------" }, 2, StringSplitOptions.None);
             if (res_a.Length < 2)
             {
-                return 0;
+                args["err"] = "the result mark is not found";
+                return 1;
             }
             var res_l = Dict.parse('[', ']', res_a[1]);
             var json = res_l.Val("json", "");
