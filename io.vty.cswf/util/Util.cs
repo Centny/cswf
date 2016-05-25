@@ -127,6 +127,8 @@ namespace io.vty.cswf.util
             return sha_s.ToUpper();
         }
 
+        [System.Runtime.InteropServices.DllImport("gdi32.dll")]
+        public static extern bool DeleteObject(IntPtr hObject);
         public static void SaveThumbnail(Bitmap bm, String spath, int maxw, int maxh, bool dispose = false, bool whitebackground = false, String ext = ".JPG")
         {
             var thumb_i = bm.GetThumbnailImage(maxw, maxh, () => { return false; }, IntPtr.Zero);
@@ -141,6 +143,7 @@ namespace io.vty.cswf.util
                 var imag_i = thumb_b.GetHbitmap(Color.White);
                 thumb_b.Dispose();
                 thumb_b = Bitmap.FromHbitmap(imag_i);
+                DeleteObject(imag_i);
             }
             var args = new EncoderParameters(1);
             args.Param[0] = new EncoderParameter(System.Drawing.Imaging.Encoder.Quality, 100L);
@@ -162,13 +165,13 @@ namespace io.vty.cswf.util
         public static bool IsOrignialType(Type t)
         {
             return t.FullName.StartsWith("System.") &&
-                !t.FullName.StartsWith("System.Collections")&&
+                !t.FullName.StartsWith("System.Collections") &&
                 !t.FullName.EndsWith("[]");
         }
 
-        public static bool IsImpl(Type type,Type impl)
+        public static bool IsImpl(Type type, Type impl)
         {
-            foreach(var i in type.GetInterfaces())
+            foreach (var i in type.GetInterfaces())
             {
                 if (i == impl)
                 {

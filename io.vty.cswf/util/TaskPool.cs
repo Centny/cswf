@@ -60,14 +60,14 @@ namespace io.vty.cswf.util
                 {
                     this.OnDone(act, e);
                 }
-                this.Running.Remove(act);
-                this.Next();
+                this.Next(act);
             }, item).Start();
         }
 
         [MethodImpl(MethodImplOptions.Synchronized)]
-        protected virtual void Next()
+        protected virtual void Next(Item old)
         {
+            this.Running.Remove(old);
             if (this.Queued.Count < 1)
             {
                 return;
