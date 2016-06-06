@@ -67,12 +67,14 @@ namespace io.vty.cswf.util
                 }
                 int found = 0, unmonitered = 0, killed = 0, monitered = 0;
                 var procs = new Dictionary<int, Process>();
+                var showlog = false;
                 foreach (var name in this.Names)
                 {
                     foreach (var proc in Process.GetProcessesByName(name))
                     {
                         procs[proc.Id] = proc;
                         found += 1;
+                        showlog = true;
                     }
                 }
                 var unknow = new HashSet<int>();
@@ -83,6 +85,7 @@ namespace io.vty.cswf.util
                         continue;
                     }
                     unknow.Add(pid);
+                    showlog = true;
                 }
                 var removed = new HashSet<int>();
                 foreach (var oid in this.Last)
@@ -93,6 +96,7 @@ namespace io.vty.cswf.util
                     }
                     removed.Add(oid);
                     unmonitered += 1;
+                    showlog = true;
                 }
                 foreach (var proc in procs)
                 {
@@ -111,13 +115,18 @@ namespace io.vty.cswf.util
                         this.Last.Add(proc.Key);
                         monitered += 1;
                     }
+                    showlog = true;
                 }
                 foreach (var rm in removed)
                 {
                     this.Last.Remove(rm);
+                    showlog = true;
                 }
-                L.I("ProcKiller do clear process({5}) success by found({0}),unmonitered({1}),killed({2}),monitered({3}),running({4})\n unknow({6}):{7}\n",
-                    found, unmonitered, killed, monitered, this.Running.Count, string.Join(",", this.Names), unknow.Count, string.Join(",", unknow));
+                if (showlog)
+                {
+                    L.I("ProcKiller do clear process({5}) success by found({0}),unmonitered({1}),killed({2}),monitered({3}),running({4})\n unknow({6}):{7}\n",
+                        found, unmonitered, killed, monitered, this.Running.Count, string.Join(",", this.Names), unknow.Count, string.Join(",", unknow));
+                }
             }
             catch (Exception e)
             {

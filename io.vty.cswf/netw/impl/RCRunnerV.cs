@@ -147,5 +147,18 @@ namespace io.vty.cswf.netw.impl
             return this.Exec_.exec_s(name, args);
         }
 
+        public virtual void hb(String data)
+        {
+            var res=this.vexec_m("hb", util.Util.dict("data", data));
+            var rdata = res.Val("data", "");
+            if (rdata.Equals(data))
+            {
+                return;
+            }
+            else
+            {
+                throw new Exception(String.Format("RC({0})) HB fail with response data is {1}, the {2} expect", this.Name, rdata, data));
+            }
+        }
     }
 }
