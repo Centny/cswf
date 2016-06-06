@@ -182,25 +182,31 @@ namespace io.vty.cswf.netw.dtm
             proc.BeginErrorReadLine();
             proc.Exited += (sender, e) =>
             {
-                var rargs = Util.NewDict();
-                var used = Util.Now() - beg;
-                var res = sb.ToString();
-                if (proc.ExitCode == 0)
+                try
                 {
-                    L.I("DTM_C running command(\n{0}\n) by tid({1}) success, used({2}ms)->\n{3}\n", cmds, tid, used, res);
-                    rargs["code"] = this.DoCmdRes(rargs, cmds, res);
+                    var rargs = Util.NewDict();
+                    var used = Util.Now() - beg;
+                    var res = sb.ToString();
+                    if (proc.ExitCode == 0)
+                    {
+                        L.I("DTM_C running command(\n{0}\n) by tid({1}) success, used({2}ms)->\n{3}\n", cmds, tid, used, res);
+                        rargs["code"] = this.DoCmdRes(rargs, cmds, res);
+                    }
+                    else
+                    {
+                        L.I("DTM_C running command(\n{0}\n) by tid({1}) error with exit code({2})->\n{3}\n", cmds, tid, proc.ExitCode, res);
+                        rargs["code"] = proc.ExitCode;
+                        rargs["err"] = String.Format("exit code is {0}", proc.ExitCode);
+                    }
+                    rargs["used"] = used;
+                    rargs["tid"] = tid;
+                    this.DelTask(tid);
+                    this.SendDone(rargs);
                 }
-                else
+                catch (Exception ex)
                 {
-                    L.I("DTM_C running command(\n{0}\n) by tid({1}) error with exit code({2})->\n{3}\n", cmds, tid, proc.ExitCode, res);
-                    rargs["code"] = proc.ExitCode;
-                    rargs["err"] = String.Format("exit code is {0}", proc.ExitCode);
+                    L.E("DTM_C running command(\n{0}\n) by tid({1}) on exit error ->\n{3}\n", cmds, tid, ex.Message);
                 }
-                rargs["used"] = used;
-                rargs["tid"] = tid;
-                this.DelTask(tid);
-                this.SendDone(rargs);
-
             };
             proc.EnableRaisingEvents = true;
         }
