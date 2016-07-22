@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -11,6 +12,8 @@ namespace io.vty.cswf.util
 {
     public class ProcKiller : IDisposable
     {
+        public delegate void CloseProcH(Process proc);
+
         public static ProcKiller Shared = new ProcKiller();
         public static void AddRunning(int pid)
         {
@@ -39,6 +42,7 @@ namespace io.vty.cswf.util
         public ICollection<String> Names { get; protected set; }
         public Timer T { get; protected set; }
         public int Period { get; set; }
+        public CloseProcH OnClose { get; set; }
 
         public ProcKiller(int period = 30000)
         {
@@ -106,7 +110,7 @@ namespace io.vty.cswf.util
                     }
                     if (this.Last.Contains(proc.Key))
                     {
-                        proc.Value.Kill();
+                        this.CloseProc(proc.Value);
                         killed += 1;
                         removed.Add(proc.Key);
                     }
@@ -156,6 +160,18 @@ namespace io.vty.cswf.util
         public void Stop()
         {
             this.Dispose();
+        }
+
+        protected virtual void CloseProc(Process proc)
+        {
+            if (this.OnClose == null)
+            {
+                proc.Kill();
+            }
+            else
+            {
+                this.OnClose(proc);
+            }
         }
     }
 }
