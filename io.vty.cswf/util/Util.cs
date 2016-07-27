@@ -102,6 +102,14 @@ namespace io.vty.cswf.util
             }
         }
 
+        public static void write(String file, String data)
+        {
+            using (StreamWriter reader = new StreamWriter(file, true, Encoding.UTF8))
+            {
+                reader.Write(data);
+            }
+        }
+
         private static Int64 uuid_ = 0;
         public static String UUID()
         {

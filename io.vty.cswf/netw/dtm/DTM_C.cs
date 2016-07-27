@@ -15,6 +15,8 @@ namespace io.vty.cswf.netw.dtm
     {
         public static readonly byte CMD_M_PROC = 10;
         public static readonly byte CMD_M_DONE = 20;
+        public const string DCS_ACTIVATED = "activated";
+        public const string DCS_UNACTIVATED = "unactivated";
         private static readonly ILog L = Log.New();
 
         public FCfg Cfg;
@@ -250,6 +252,16 @@ namespace io.vty.cswf.netw.dtm
             args["tid"] = tid;
             args["rate"] = rate;
             this.MsgC.writev(new BysImpl(null, new byte[] { CMD_M_PROC }), args);
+        }
+
+        public virtual void ChangeStatus(String status, IDictionary<string, object> args = null)
+        {
+            if (args == null)
+            {
+                args = Util.NewDict();
+            }
+            args["status"] = status;
+            this.vexec_m("change_status", args);
         }
 
         public virtual HResult OnProc(Request r)

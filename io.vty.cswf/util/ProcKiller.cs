@@ -13,6 +13,7 @@ namespace io.vty.cswf.util
     public class ProcKiller : IDisposable
     {
         public delegate void CloseProcH(Process proc);
+        public delegate void HavingNotKillH(int count);
 
         public static ProcKiller Shared = new ProcKiller();
         public static void AddRunning(int pid)
@@ -39,15 +40,18 @@ namespace io.vty.cswf.util
         private static readonly ILog L = Log.New();
         public ICollection<int> Running { get; protected set; }
         public ICollection<int> Last { get; protected set; }
+        public ICollection<int> Killed { get; protected set; }
         public ICollection<String> Names { get; protected set; }
         public Timer T { get; protected set; }
         public int Period { get; set; }
         public CloseProcH OnClose { get; set; }
+        public HavingNotKillH OnHavingNotKill { get; set; }
 
         public ProcKiller(int period = 30000)
         {
             this.Running = new List<int>();
             this.Last = new List<int>();
+            this.Killed = new List<int>();
             this.Names = new List<String>();
             this.Period = period;
             //this.T = new Timer(this.Clear, 0, period, period);
@@ -126,10 +130,30 @@ namespace io.vty.cswf.util
                     this.Last.Remove(rm);
                     showlog = true;
                 }
+                //
+                removed.Clear();
+                var not_kiiled = 0;
+                foreach (var k in this.Killed)
+                {
+                    if (procs.ContainsKey(k))
+                    {
+                        not_kiiled += 1;
+                        continue;
+                    }
+                    removed.Add(k);
+                }
+                foreach (var rm in removed)
+                {
+                    this.Killed.Remove(rm);
+                }
                 if (showlog)
                 {
                     L.I("ProcKiller do clear process({5}) success by found({0}),unmonitered({1}),killed({2}),monitered({3}),running({4})\n unknow({6}):{7}\n",
                         found, unmonitered, killed, monitered, this.Running.Count, string.Join(",", this.Names), unknow.Count, string.Join(",", unknow));
+                }
+                if (not_kiiled > 0 && this.OnHavingNotKill != null)
+                {
+                    this.OnHavingNotKill(not_kiiled);
                 }
             }
             catch (Exception e)
@@ -172,6 +196,7 @@ namespace io.vty.cswf.util
             {
                 this.OnClose(proc);
             }
+            this.Killed.Add(proc.Id);
         }
     }
 }
