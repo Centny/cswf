@@ -40,7 +40,7 @@ namespace io.vty.cswf.util
         private static readonly ILog L = Log.New();
         public ICollection<int> Running { get; protected set; }
         public ICollection<int> Last { get; protected set; }
-        public ICollection<int> Killed { get; protected set; }
+        public IDictionary<int, int> Killed { get; protected set; }
         public ICollection<String> Names { get; protected set; }
         public Timer T { get; protected set; }
         public int Period { get; set; }
@@ -51,7 +51,7 @@ namespace io.vty.cswf.util
         {
             this.Running = new List<int>();
             this.Last = new List<int>();
-            this.Killed = new List<int>();
+            this.Killed = new Dictionary<int, int>();
             this.Names = new List<String>();
             this.Period = period;
             //this.T = new Timer(this.Clear, 0, period, period);
@@ -117,6 +117,14 @@ namespace io.vty.cswf.util
                         this.CloseProc(proc.Value);
                         killed += 1;
                         removed.Add(proc.Key);
+                        if (this.Killed.ContainsKey(proc.Key))
+                        {
+                            this.Killed[proc.Key] += 1;
+                        }
+                        else
+                        {
+                            this.Killed[proc.Key] = 1;
+                        }
                     }
                     else
                     {
@@ -132,28 +140,33 @@ namespace io.vty.cswf.util
                 }
                 //
                 removed.Clear();
-                var not_kiiled = 0;
+                var kill_time = 0;
+                var not_killed = 0;
                 foreach (var k in this.Killed)
                 {
-                    if (procs.ContainsKey(k))
+                    if (procs.ContainsKey(k.Key))
                     {
-                        not_kiiled += 1;
+                        if (k.Value > kill_time)
+                        {
+                            kill_time = k.Value;
+                        }
+                        not_killed += 1;
                         continue;
                     }
-                    removed.Add(k);
+                    removed.Add(k.Key);
                 }
                 foreach (var rm in removed)
                 {
                     this.Killed.Remove(rm);
                 }
+                if (kill_time > 3 && this.OnHavingNotKill != null)
+                {
+                    this.OnHavingNotKill(not_killed);
+                }
                 if (showlog)
                 {
                     L.I("ProcKiller do clear process({5}) success by found({0}),unmonitered({1}),killed({2}),monitered({3}),running({4})\n unknow({6}):{7}\n",
                         found, unmonitered, killed, monitered, this.Running.Count, string.Join(",", this.Names), unknow.Count, string.Join(",", unknow));
-                }
-                if (not_kiiled > 0 && this.OnHavingNotKill != null)
-                {
-                    this.OnHavingNotKill(not_kiiled);
                 }
             }
             catch (Exception e)
@@ -196,7 +209,6 @@ namespace io.vty.cswf.util
             {
                 this.OnClose(proc);
             }
-            this.Killed.Add(proc.Id);
         }
     }
 }
