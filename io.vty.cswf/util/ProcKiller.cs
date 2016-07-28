@@ -204,6 +204,7 @@ namespace io.vty.cswf.util
             if (this.OnClose == null)
             {
                 proc.Kill();
+                L.D("sending kill signal to process({0})", proc.Id);
             }
             else
             {
