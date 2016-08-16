@@ -262,6 +262,7 @@ namespace io.vty.cswf.netw.dtm
             }
             args["status"] = status;
             this.vexec_m("change_status", args);
+            L.D("do change status to {0} success", status);
         }
 
         public virtual HResult OnProc(Request r)
