@@ -24,13 +24,24 @@ namespace io.vty.cswf.util
         {
             Shared.Running.Remove(pid);
         }
+
+        public static void MarkUsed(int pid)
+        {
+            Shared.Using.Add(pid, Util.Now());
+        }
+        public static void MarkDone(int pid)
+        {
+            Shared.Using.Remove(pid);
+        }
+
         public static void AddName(string name)
         {
             Shared.Names.Add(name);
         }
-        public static void StartTimer(int period = 30000)
+        public static void StartTimer(int period = 30000, int timeout = 60000)
         {
             Shared.Period = period;
+            Shared.Timeout = timeout;
             Shared.Start();
         }
         public static void StopTimer()
@@ -40,20 +51,24 @@ namespace io.vty.cswf.util
         private static readonly ILog L = Log.New();
         public ICollection<int> Running { get; protected set; }
         public ICollection<int> Last { get; protected set; }
+        public IDictionary<int, long> Using { get; protected set; }
         public IDictionary<int, int> Killed { get; protected set; }
         public ICollection<String> Names { get; protected set; }
         public Timer T { get; protected set; }
         public int Period { get; set; }
+        public long Timeout { get; set; }
         public CloseProcH OnClose { get; set; }
         public HavingNotKillH OnHavingNotKill { get; set; }
 
-        public ProcKiller(int period = 30000)
+        public ProcKiller(int period = 30000, int timeout = 60000)
         {
             this.Running = new List<int>();
             this.Last = new List<int>();
+            this.Using = new Dictionary<int, long>();
             this.Killed = new Dictionary<int, int>();
             this.Names = new List<String>();
             this.Period = period;
+            this.Timeout = timeout;
             //this.T = new Timer(this.Clear, 0, period, period);
         }
         public void Lock()
@@ -106,10 +121,25 @@ namespace io.vty.cswf.util
                     unmonitered += 1;
                     showlog = true;
                 }
+                var now = Util.Now();
                 foreach (var proc in procs)
                 {
                     if (this.Running.Contains(proc.Key))
                     {
+                        if (this.Using.ContainsKey(proc.Key) && ((now - this.Using[proc.Key]) > this.Timeout))
+                        {
+                            this.CloseProc(proc.Value);
+                            killed += 1;
+                            removed.Add(proc.Key);
+                            if (Killed.ContainsKey(proc.Key))
+                            {
+                                this.Killed[proc.Key] += 1;
+                            }
+                            else
+                            {
+                                this.Killed[proc.Key] = 1;
+                            }
+                        }
                         continue;
                     }
                     if (this.Last.Contains(proc.Key))
@@ -117,7 +147,7 @@ namespace io.vty.cswf.util
                         this.CloseProc(proc.Value);
                         killed += 1;
                         removed.Add(proc.Key);
-                        if (this.Killed.ContainsKey(proc.Key))
+                        if (Killed.ContainsKey(proc.Key))
                         {
                             this.Killed[proc.Key] += 1;
                         }
@@ -158,6 +188,19 @@ namespace io.vty.cswf.util
                 foreach (var rm in removed)
                 {
                     this.Killed.Remove(rm);
+                }
+                removed.Clear();
+                foreach (var u in this.Using)
+                {
+                    if (procs.ContainsKey(u.Key))
+                    {
+                        continue;
+                    }
+                    removed.Add(u.Key);
+                }
+                foreach (var rm in removed)
+                {
+                    this.Using.Remove(rm);
                 }
                 if (kill_time > 3 && this.OnHavingNotKill != null)
                 {
