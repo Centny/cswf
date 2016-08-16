@@ -28,6 +28,10 @@ namespace io.vty.cswf.util
             return Encoding.Default.GetBytes(s);
         }
 
+        public static string tos(ICollection<String> cs)
+        {
+            return String.Join(",", cs.ToArray());
+        }
         /// <summary>
         /// convert byte[] to string.
         /// </summary>
