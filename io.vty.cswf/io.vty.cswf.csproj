@@ -79,6 +79,7 @@
     <Compile Include="netw\http\HResult.cs" />
     <Compile Include="netw\http\Request.cs" />
     <Compile Include="netw\http\Server.cs" />
+    <Compile Include="netw\impl\LambdaEvnH.cs" />
     <Compile Include="netw\impl\QueueEvnH.cs" />
     <Compile Include="netw\impl\RCM_Cmd.cs" />
     <Compile Include="netw\impl\DoNoneH.cs" />
@@ -100,6 +101,7 @@
     <Compile Include="netw\NetwRunner.cs" />
     <Compile Include="netw\NetwRunnerV.cs" />
     <Compile Include="netw\rc\EvnListener.cs" />
+    <Compile Include="netw\rc\LambdaEvnH.cs" />
     <Compile Include="util\M2S.cs" />
     <Compile Include="netw\NetwRunnerV_j.cs" />
     <Compile Include="netw\rc\RCRunner_m.cs" />
