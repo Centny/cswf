@@ -26,7 +26,7 @@ namespace io.vty.cswf.netw.dtm
             get;
             protected set;
         }
-        public DTM_C(string name, FCfg cfg) : base(name)
+        public DTM_C(string name, FCfg cfg, rc.EvnListener evn = null) : base(name, evn)
         {
             this.Tasks = new Dictionary<String, Process>();
             this.Cfg = cfg;

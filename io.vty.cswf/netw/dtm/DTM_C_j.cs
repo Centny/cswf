@@ -12,21 +12,21 @@ namespace io.vty.cswf.netw.dtm
     public class DTM_C_j : DTM_C
     {
         public NetwRunnerV.NetwBaseBuilder builder;
-        public DTM_C_j(string name, FCfg cfg) : base(name, cfg)
+        public DTM_C_j(string name, FCfg cfg, rc.EvnListener evn = null) : base(name, cfg, evn)
         {
             this.builder = () =>
             {
                 throw new NotImplementedException("NetwBaseBuilder is not implemented");
             };
         }
-        public DTM_C_j(string name, FCfg cfg, NetwRunnerV.NetwBaseBuilder builder) : base(name, cfg)
+        public DTM_C_j(string name, FCfg cfg, NetwRunnerV.NetwBaseBuilder builder, rc.EvnListener evn = null) : base(name, cfg, evn)
         {
             this.builder = builder;
         }
 
-        public override NetwRunnerV createRunner(OBDH h)
+        public override NetwRunnerV createRunner(OBDH h, r.EvnListener evn)
         {
-            NetwRunnerV runner = new Wrapper(this, h, this);
+            NetwRunnerV runner = new Wrapper(this, h, evn);
             new Task(con => runner.runc(con as Netw), runner.doCon(), TaskCreationOptions.LongRunning).Start();
             return runner;
         }

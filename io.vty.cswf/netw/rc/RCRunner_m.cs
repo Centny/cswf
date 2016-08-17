@@ -18,6 +18,8 @@ namespace io.vty.cswf.netw.rc
         public static readonly byte CMD_C = 20;
         public static readonly byte MSG_C = 21;
         //
+        public virtual QueueEvnH evnq { get; set; }
+        public virtual EvnListener evnh { get; protected set; }
         public string Token;
         protected OBDH obdh;
         protected ExecHm HM;
@@ -27,16 +29,23 @@ namespace io.vty.cswf.netw.rc
             private set;
         }
         protected CmdListener H;
-        public RCRunner_m(string name) : base(name)
+        public RCRunner_m(string name, EvnListener evn = null) : base(name)
         {
             this.HM = new ExecHm();
+            this.evnq = new QueueEvnH();
+            this.evnq.HS.Add(this);
+            if (evn != null)
+            {
+                this.evnq.HS.Add(evn);
+                this.evnh = evn;
+            }
         }
 
         protected override void DailRunner()
         {
             this.Connected = 0;
             this.obdh = new OBDH();
-            this.Runner = this.createRunner(this.obdh);
+            this.Runner = this.createRunner(this.obdh, this.evnq);
             this.Exec_ = new ExecCm(new NetwImplV.Wrapper(this.Runner, new OBDC(this.Runner.netw, CMD_S)), this.Runner);
             obdh.addh(CMD_S, this.Exec_);
             //
@@ -77,10 +86,15 @@ namespace io.vty.cswf.netw.rc
             if (res.Val("code", -1) == 0)
             {
                 L.D("RC({0}) Runner login by token({1}) success", this.Name, this.Token);
+                if (this.evnh != null)
+                {
+                    this.evnh.onLogin(this, token);
+                }
             }
             else
             {
                 L.E("RC({0}) Runner login by token({1}) faile with error({1})", this.Name, this.Token, res.Val("err", ""));
+                this.Stop();
                 throw new Exception(res.Val("err", ""));
             }
         }
@@ -93,6 +107,6 @@ namespace io.vty.cswf.netw.rc
         {
             this.HM.addH(name, h);
         }
-        public abstract NetwRunnerV createRunner(OBDH h);
+        public abstract NetwRunnerV createRunner(OBDH h, r.EvnListener evh);
     }
 }
