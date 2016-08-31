@@ -74,20 +74,28 @@ namespace io.vty.cswf.util
             this.Timeout = timeout;
             //this.T = new Timer(this.Clear, 0, period, period);
         }
-        public void Lock()
+        public void Lock(String msg="base")
         {
             Monitor.Enter(this);
+            if (this.ShowLog > 1)
+            {
+                L.D("ProcKiller({0}) do lock...",msg);
+            }
         }
-        public void Unlock()
+        public void Unlock(String msg="base")
         {
             Monitor.Exit(this);
+            if (this.ShowLog > 1)
+            {
+                L.D("ProcKiller({0}) do unlock...",msg);
+            }
         }
         protected virtual void Clear(object state)
         {
             try
             {
+                this.Lock("clear");
                 var showlog = this.ShowLog > 0;
-                Monitor.Enter(this);
                 if (this.Names.Count < 1)
                 {
                     return;
@@ -266,7 +274,7 @@ namespace io.vty.cswf.util
             }
             finally
             {
-                Monitor.Exit(this);
+                this.Unlock("clear");
             }
         }
 
