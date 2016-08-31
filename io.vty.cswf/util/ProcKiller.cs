@@ -16,14 +16,6 @@ namespace io.vty.cswf.util
         public delegate void HavingNotKillH(int count);
 
         public static ProcKiller Shared = new ProcKiller();
-        public static void AddRunning(int pid)
-        {
-            Shared.Running.Add(pid);
-        }
-        public static void DelRunning(int pid)
-        {
-            Shared.Running.Remove(pid);
-        }
 
         public static void MarkUsed(int pid)
         {
@@ -49,12 +41,12 @@ namespace io.vty.cswf.util
             Shared.Stop();
         }
         private static readonly ILog L = Log.New();
-        public ICollection<int> Running { get; protected set; }
-        public ICollection<int> Last { get; protected set; }
+        //public ICollection<int> Running { get; protected set; }
+        //public ICollection<int> Last { get; protected set; }
         public IDictionary<int, long> Using { get; protected set; }
         public IDictionary<int, int> Killed { get; protected set; }
         public ICollection<String> Names { get; protected set; }
-        public IDictionary<int, long> NotResponsed { get; protected set; }
+        public IDictionary<int, long> Running { get; protected set; }
         public int Period { get; set; }
         public long Timeout { get; set; }
         public CloseProcH OnClose { get; set; }
@@ -64,30 +56,30 @@ namespace io.vty.cswf.util
 
         public ProcKiller(int period = 30000, int timeout = 60000)
         {
-            this.Running = new List<int>();
-            this.Last = new List<int>();
+            //this.Running = new List<int>();
+            //this.Last = new List<int>();
             this.Using = new Dictionary<int, long>();
             this.Killed = new Dictionary<int, int>();
             this.Names = new List<String>();
-            this.NotResponsed = new Dictionary<int, long>();
+            this.Running = new Dictionary<int, long>();
             this.Period = period;
             this.Timeout = timeout;
             //this.T = new Timer(this.Clear, 0, period, period);
         }
-        public void Lock(String msg="base")
+        public void Lock(String msg = "base")
         {
             Monitor.Enter(this);
             if (this.ShowLog > 1)
             {
-                L.D("ProcKiller({0}) do lock...",msg);
+                L.D("ProcKiller({0}) do lock...", msg);
             }
         }
-        public void Unlock(String msg="base")
+        public void Unlock(String msg = "base")
         {
             Monitor.Exit(this);
             if (this.ShowLog > 1)
             {
-                L.D("ProcKiller({0}) do unlock...",msg);
+                L.D("ProcKiller({0}) do unlock...", msg);
             }
         }
         protected virtual void Clear(object state)
@@ -100,7 +92,7 @@ namespace io.vty.cswf.util
                 {
                     return;
                 }
-                int found = 0, unmonitered = 0, killed = 0, monitered = 0;
+                int found = 0, killed = 0, monitered = 0;
                 var procs = new Dictionary<int, Process>();
                 foreach (var name in this.Names)
                 {
@@ -111,51 +103,31 @@ namespace io.vty.cswf.util
                         showlog = true;
                     }
                 }
-                var unknow = new HashSet<int>();
-                foreach (var pid in this.Running)
-                {
-                    if (procs.ContainsKey(pid))
-                    {
-                        continue;
-                    }
-                    unknow.Add(pid);
-                    showlog = true;
-                }
-                var removed = new HashSet<int>();
-                foreach (var oid in this.Last)
-                {
-                    if (procs.ContainsKey(oid))
-                    {
-                        continue;
-                    }
-                    removed.Add(oid);
-                    unmonitered += 1;
-                    showlog = true;
-                }
                 if (this.ShowLog > 1)
                 {
-                    L.I("ProcKiller start do process({0}) success by found({1}),unmonitered({2}),killed({3}),monitered({4})\n"
-                        + " running({5}):{6}\n"
-                        + " unknow({7}):{8}\n"
-                        + " using({9}):{10}\n"
-                        + " notr({11}):{12}->{13}\n",
-                       string.Join(",", this.Names), found, unmonitered, killed, monitered,
-                       this.Running.Count, string.Join(",", this.Running),
-                       unknow.Count, string.Join(",", unknow),
-                       this.Using.Count, string.Join(",", this.Using),
-                       this.NotResponsed.Count, string.Join(",", this.NotResponsed.Keys), string.Join(",", this.NotResponsed.Values)
+                    L.I("ProcKiller start do process({0}) success by found({1}),killed({2}),monitered({3})\n"
+                        + " using({4}):{5}->{6}\n"
+                        + " killed({7}):{8}->{9}\n"
+                        + " running({10}):{11}->{12}\n",
+                       string.Join(",", this.Names), found, killed, monitered,
+                       this.Using.Count, string.Join(",", this.Using.Keys), string.Join(",", this.Using.Values),
+                       this.Killed.Count, string.Join(",", this.Killed.Keys), string.Join(",", this.Killed.Values),
+                       this.Running.Count, string.Join(",", this.Running.Keys), string.Join(",", this.Running.Values)
                        );
                 }
                 var now = Util.Now();
                 foreach (var proc in procs)
                 {
-                    if (this.Running.Contains(proc.Key))
+                    if (this.Using.ContainsKey(proc.Key))
                     {
-                        if (this.Using.ContainsKey(proc.Key) && ((now - this.Using[proc.Key]) > this.Timeout))
+                        continue;
+                    }
+                    if (this.Running.ContainsKey(proc.Key))
+                    {
+                        if (now - this.Running[proc.Key] > this.Timeout)
                         {
                             this.CloseProc(proc.Value);
                             killed += 1;
-                            removed.Add(proc.Key);
                             if (Killed.ContainsKey(proc.Key))
                             {
                                 this.Killed[proc.Key] += 1;
@@ -164,90 +136,77 @@ namespace io.vty.cswf.util
                             {
                                 this.Killed[proc.Key] = 1;
                             }
-                        }
-                        else
-                        {
-                            L.D("ProcKiller skipping progress({0}) for running", proc.Key);
-                        }
-                        continue;
-                    }
-                    showlog = true;
-                    if (this.Last.Contains(proc.Key) ||
-                        (!proc.Value.Responding && this.NotResponsed.ContainsKey(proc.Key) && now - this.NotResponsed[proc.Key] > this.Timeout))
-                    {
-                        this.CloseProc(proc.Value);
-                        killed += 1;
-                        removed.Add(proc.Key);
-                        if (Killed.ContainsKey(proc.Key))
-                        {
-                            this.Killed[proc.Key] += 1;
-                        }
-                        else
-                        {
-                            this.Killed[proc.Key] = 1;
-                        }
-                        if (this.NotResponsed.ContainsKey(proc.Key))
-                        {
-                            this.NotResponsed.Remove(proc.Key);
-                        }
-                        continue;
-                    }
-                    if (this.NotResponsed.ContainsKey(proc.Key))
-                    {
-                        if (proc.Value.Responding)
-                        {
-                            this.NotResponsed.Remove(proc.Key);
+                            this.Running.Remove(proc.Key);
+                            //
+                            if (this.Using.ContainsKey(proc.Key))
+                            {
+                                this.Using.Remove(proc.Key);
+                            }
+                            showlog = true;
                         }
                     }
                     else
                     {
-                        if (!proc.Value.Responding)
-                        {
-                            L.D("ProcKiller found not responsing process({0})", proc.Key);
-                            this.NotResponsed.Add(proc.Key, now);
-                        }
+                        this.Running.Add(proc.Key, now);
+                        monitered += 1;
+                        showlog = true;
                     }
-                    this.Last.Add(proc.Key);
-                    monitered += 1;
+
                 }
-                foreach (var rm in removed)
-                {
-                    this.Last.Remove(rm);
-                    showlog = true;
-                }
-                //
-                removed.Clear();
                 var kill_time = 0;
                 var not_killed = 0;
-                foreach (var k in this.Killed)
+                //clear killed
                 {
-                    if (procs.ContainsKey(k.Key))
+                    var removed = new List<int>();
+                    foreach (var k in this.Killed)
                     {
-                        if (k.Value > kill_time)
+                        if (procs.ContainsKey(k.Key))
                         {
-                            kill_time = k.Value;
+                            if (k.Value > kill_time)
+                            {
+                                kill_time = k.Value;
+                            }
+                            not_killed += 1;
+                            continue;
                         }
-                        not_killed += 1;
-                        continue;
+                        removed.Add(k.Key);
                     }
-                    removed.Add(k.Key);
-                }
-                foreach (var rm in removed)
-                {
-                    this.Killed.Remove(rm);
-                }
-                removed.Clear();
-                foreach (var u in this.Using)
-                {
-                    if (procs.ContainsKey(u.Key))
+                    foreach (var rm in removed)
                     {
-                        continue;
+                        this.Killed.Remove(rm);
                     }
-                    removed.Add(u.Key);
                 }
-                foreach (var rm in removed)
+                //clear using
                 {
-                    this.Using.Remove(rm);
+                    var removed = new List<int>();
+                    foreach (var u in this.Using)
+                    {
+                        if (procs.ContainsKey(u.Key))
+                        {
+                            continue;
+                        }
+                        removed.Add(u.Key);
+                    }
+                    foreach (var rm in removed)
+                    {
+                        this.Using.Remove(rm);
+                    }
+                }
+                //clear running
+                {
+                    var removed = new List<int>();
+                    foreach (var u in this.Running)
+                    {
+                        if (procs.ContainsKey(u.Key))
+                        {
+                            continue;
+                        }
+                        removed.Add(u.Key);
+                    }
+                    foreach (var rm in removed)
+                    {
+                        this.Running.Remove(rm);
+                    }
                 }
                 if (kill_time > 3 && this.OnHavingNotKill != null)
                 {
@@ -255,16 +214,14 @@ namespace io.vty.cswf.util
                 }
                 if (showlog)
                 {
-                    L.I("ProcKiller do clear process({0}) success by found({1}),unmonitered({2}),killed({3}),monitered({4})\n"
-                        + " running({5}):{6}\n"
-                        + " unknow({7}):{8}\n"
-                        + " using({9}):{10}\n"
-                        + " notr({11}):{12}->{13}\n",
-                       string.Join(",", this.Names), found, unmonitered, killed, monitered,
-                       this.Running.Count, string.Join(",", this.Running),
-                       unknow.Count, string.Join(",", unknow),
-                       this.Using.Count, string.Join(",", this.Using),
-                       this.NotResponsed.Count, string.Join(",", this.NotResponsed.Keys), string.Join(",", this.NotResponsed.Values)
+                    L.I("ProcKiller start do process({0}) success by found({1}),killed({2}),monitered({3})\n"
+                        + " using({4}):{5}->{6}\n"
+                        + " killed({7}):{8}->{9}\n"
+                        + " running({10}):{11}->{12}\n",
+                       string.Join(",", this.Names), found, killed, monitered,
+                       this.Using.Count, string.Join(",", this.Using.Keys), string.Join(",", this.Using.Values),
+                       this.Killed.Count, string.Join(",", this.Killed.Keys), string.Join(",", this.Killed.Values),
+                       this.Running.Count, string.Join(",", this.Running.Keys), string.Join(",", this.Running.Values)
                        );
                 }
             }
