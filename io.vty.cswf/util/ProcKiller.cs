@@ -54,6 +54,7 @@ namespace io.vty.cswf.util
         public IDictionary<int, long> Using { get; protected set; }
         public IDictionary<int, int> Killed { get; protected set; }
         public ICollection<String> Names { get; protected set; }
+        public IDictionary<int, long> NotResponsed { get; protected set; }
         public Timer T { get; protected set; }
         public int Period { get; set; }
         public long Timeout { get; set; }
@@ -67,6 +68,7 @@ namespace io.vty.cswf.util
             this.Using = new Dictionary<int, long>();
             this.Killed = new Dictionary<int, int>();
             this.Names = new List<String>();
+            this.NotResponsed = new Dictionary<int, long>();
             this.Period = period;
             this.Timeout = timeout;
             //this.T = new Timer(this.Clear, 0, period, period);
@@ -142,7 +144,9 @@ namespace io.vty.cswf.util
                         }
                         continue;
                     }
-                    if (this.Last.Contains(proc.Key))
+                    showlog = true;
+                    if (this.Last.Contains(proc.Key) ||
+                        (!proc.Value.Responding && this.NotResponsed.ContainsKey(proc.Key) && now - this.NotResponsed[proc.Key] > this.Timeout))
                     {
                         this.CloseProc(proc.Value);
                         killed += 1;
@@ -155,13 +159,23 @@ namespace io.vty.cswf.util
                         {
                             this.Killed[proc.Key] = 1;
                         }
+                        continue;
+                    }
+                    if (proc.Value.Responding)
+                    {
+                        if (this.NotResponsed.ContainsKey(proc.Key))
+                        {
+                            this.NotResponsed.Remove(proc.Key);
+                        }
                     }
                     else
                     {
-                        this.Last.Add(proc.Key);
-                        monitered += 1;
+                        L.D("ProcKiller found not responsing process({0})", proc.Key);
+                        this.NotResponsed.Add(proc.Key, now)
+;
                     }
-                    showlog = true;
+                    this.Last.Add(proc.Key);
+                    monitered += 1;
                 }
                 foreach (var rm in removed)
                 {
