@@ -159,20 +159,26 @@ namespace io.vty.cswf.util
                         {
                             this.Killed[proc.Key] = 1;
                         }
+                        if (this.NotResponsed.ContainsKey(proc.Key))
+                        {
+                            this.NotResponsed.Remove(proc.Key);
+                        }
                         continue;
                     }
-                    if (proc.Value.Responding)
+                    if (this.NotResponsed.ContainsKey(proc.Key))
                     {
-                        if (this.NotResponsed.ContainsKey(proc.Key))
+                        if (proc.Value.Responding)
                         {
                             this.NotResponsed.Remove(proc.Key);
                         }
                     }
                     else
                     {
-                        L.D("ProcKiller found not responsing process({0})", proc.Key);
-                        this.NotResponsed.Add(proc.Key, now)
-;
+                        if (!proc.Value.Responding)
+                        {
+                            L.D("ProcKiller found not responsing process({0})", proc.Key);
+                            this.NotResponsed.Add(proc.Key, now);
+                        }
                     }
                     this.Last.Add(proc.Key);
                     monitered += 1;
