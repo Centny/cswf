@@ -55,12 +55,12 @@ namespace io.vty.cswf.util
         public IDictionary<int, int> Killed { get; protected set; }
         public ICollection<String> Names { get; protected set; }
         public IDictionary<int, long> NotResponsed { get; protected set; }
-        public Timer T { get; protected set; }
         public int Period { get; set; }
         public long Timeout { get; set; }
         public CloseProcH OnClose { get; set; }
         public int ShowLog { get; set; }
         public HavingNotKillH OnHavingNotKill { get; set; }
+        private bool srunning;
 
         public ProcKiller(int period = 30000, int timeout = 60000)
         {
@@ -270,19 +270,25 @@ namespace io.vty.cswf.util
             }
         }
 
+        protected virtual void loop(object state)
+        {
+            this.srunning = true;
+            while (this.srunning)
+            {
+                this.Clear(state);
+                Thread.Sleep(this.Period);
+            }
+            this.srunning = false;
+        }
+
         public void Dispose()
         {
-            if (this.T == null)
-            {
-                return;
-            }
-            this.T.Dispose();
-            this.T = null;
+            this.srunning = false;
         }
 
         public void Start()
         {
-            this.T = new Timer(this.Clear, 0, this.Period, this.Period);
+            new Thread(this.loop).Start();
         }
 
         public void Stop()
