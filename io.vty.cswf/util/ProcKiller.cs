@@ -142,6 +142,10 @@ namespace io.vty.cswf.util
                                 this.Killed[proc.Key] = 1;
                             }
                         }
+                        else
+                        {
+                            L.D("ProcKiller skipping progress({0}) for running", proc.Key);
+                        }
                         continue;
                     }
                     showlog = true;
@@ -228,8 +232,17 @@ namespace io.vty.cswf.util
                 }
                 if (showlog)
                 {
-                    L.I("ProcKiller do clear process({5}) success by found({0}),unmonitered({1}),killed({2}),monitered({3}),running({4})\n unknow({6}):{7}\n",
-                        found, unmonitered, killed, monitered, this.Running.Count, string.Join(",", this.Names), unknow.Count, string.Join(",", unknow));
+                    L.I("ProcKiller do clear process({0}) success by found({1}),unmonitered({2}),killed({3}),monitered({4})\n"
+                        + " running({5}):{6}\n"
+                        + " unknow({7}):{8}\n"
+                        + " using({9}):{10}\n"
+                        + " notr({11}):{12}->{13}\n",
+                       string.Join(",", this.Names), found, unmonitered, killed, monitered,
+                       this.Running.Count, string.Join(",", this.Running),
+                       unknow.Count, string.Join(",", unknow),
+                       this.Using.Count, string.Join(",", this.Using),
+                       this.NotResponsed.Count, string.Join(",", this.NotResponsed.Keys), string.Join(",", this.NotResponsed.Values)
+                       );
                 }
             }
             catch (Exception e)
