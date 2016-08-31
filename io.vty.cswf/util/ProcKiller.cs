@@ -59,6 +59,7 @@ namespace io.vty.cswf.util
         public int Period { get; set; }
         public long Timeout { get; set; }
         public CloseProcH OnClose { get; set; }
+        public bool ShowLog { get; set; }
         public HavingNotKillH OnHavingNotKill { get; set; }
 
         public ProcKiller(int period = 30000, int timeout = 60000)
@@ -92,7 +93,7 @@ namespace io.vty.cswf.util
                 }
                 int found = 0, unmonitered = 0, killed = 0, monitered = 0;
                 var procs = new Dictionary<int, Process>();
-                var showlog = false;
+                var showlog = this.ShowLog;
                 foreach (var name in this.Names)
                 {
                     foreach (var proc in Process.GetProcessesByName(name))
