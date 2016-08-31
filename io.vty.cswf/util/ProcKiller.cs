@@ -59,7 +59,7 @@ namespace io.vty.cswf.util
         public int Period { get; set; }
         public long Timeout { get; set; }
         public CloseProcH OnClose { get; set; }
-        public bool ShowLog { get; set; }
+        public int ShowLog { get; set; }
         public HavingNotKillH OnHavingNotKill { get; set; }
 
         public ProcKiller(int period = 30000, int timeout = 60000)
@@ -86,6 +86,7 @@ namespace io.vty.cswf.util
         {
             try
             {
+                var showlog = this.ShowLog > 0;
                 Monitor.Enter(this);
                 if (this.Names.Count < 1)
                 {
@@ -93,7 +94,6 @@ namespace io.vty.cswf.util
                 }
                 int found = 0, unmonitered = 0, killed = 0, monitered = 0;
                 var procs = new Dictionary<int, Process>();
-                var showlog = this.ShowLog;
                 foreach (var name in this.Names)
                 {
                     foreach (var proc in Process.GetProcessesByName(name))
@@ -123,6 +123,20 @@ namespace io.vty.cswf.util
                     removed.Add(oid);
                     unmonitered += 1;
                     showlog = true;
+                }
+                if (this.ShowLog > 1)
+                {
+                    L.I("ProcKiller start do process({0}) success by found({1}),unmonitered({2}),killed({3}),monitered({4})\n"
+                        + " running({5}):{6}\n"
+                        + " unknow({7}):{8}\n"
+                        + " using({9}):{10}\n"
+                        + " notr({11}):{12}->{13}\n",
+                       string.Join(",", this.Names), found, unmonitered, killed, monitered,
+                       this.Running.Count, string.Join(",", this.Running),
+                       unknow.Count, string.Join(",", unknow),
+                       this.Using.Count, string.Join(",", this.Using),
+                       this.NotResponsed.Count, string.Join(",", this.NotResponsed.Keys), string.Join(",", this.NotResponsed.Values)
+                       );
                 }
                 var now = Util.Now();
                 foreach (var proc in procs)
