@@ -144,5 +144,13 @@ namespace io.vty.cswf.test.util
             Assert.AreEqual(3, res.OValA.Length);
             Assert.AreEqual(3, res.OValL.Count);
         }
+        [TestMethod]
+        public void testDict()
+        {
+            var res = H.doGet("http://sso.dev.gdy.io/sso/api/login?usr=c2&pwd=123456");
+            var data = res.toUtilDict();
+            var innerData = data.Val<Dict>("data", null);
+            Assert.AreEqual(true, innerData.Val<string>("token", "").Length > 0);
+        }
     }
 }

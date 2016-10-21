@@ -196,6 +196,11 @@ namespace io.vty.cswf.util
             {
                 return parse<Dictionary<string, object>>();
             }
+
+            public Dict toUtilDict()
+            {
+                return new Dict(this.toDict());
+            }
         }
         public static Response doGet(Dictionary<string, string> headers, string url_f, params Object[] args)
         {

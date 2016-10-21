@@ -12,7 +12,7 @@ namespace io.vty.cswf.test.util
         [TestMethod]
         public void TesDoGet()
         {
-            var res = H.doGet("http://127.0.0.1:8090/g_args?a={0}&b={1}&c={2}", 1, 2, "xx");
+            var res = H.doGet("http://sso.dev.gdy.io/sso/api/login?usr=c2&pwd=123456");
             Assert.AreEqual(HttpStatusCode.OK, res.StatusCode);
             Console.WriteLine(res.Data);
             var data = res.toDict();

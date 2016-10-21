@@ -22,7 +22,7 @@ namespace io.vty.cswf.test.util
             proc.StartInfo.RedirectStandardError = true;
             proc.StartInfo.CreateNoWindow = true;
             proc.Start();
-            killer.Running.Add(proc.Id);
+           // killer.Running.Add(proc.Id);
             String data;
             TaskPool.Queue(i =>
             {

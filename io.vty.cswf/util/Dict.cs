@@ -148,8 +148,20 @@ namespace io.vty.cswf.util
             {
                 return val;
             }
-            var sval = val.ToString();
             object res = def;
+            if (type == typeof(Dict))
+            {
+                //var valType = val.GetType();
+                if (val is IDictionary<string, object>)
+                {
+                    return new Dict(val as IDictionary<string, object>);
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            var sval = val.ToString();
             if (type == typeof(string))
             {
                 res = sval;
