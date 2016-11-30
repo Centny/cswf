@@ -143,7 +143,22 @@ namespace io.vty.cswf.util
         public static extern bool DeleteObject(IntPtr hObject);
         public static void SaveThumbnail(Bitmap bm, String spath, int maxw, int maxh, bool dispose = false, bool whitebackground = false, String ext = ".JPG")
         {
-            var thumb_i = bm.GetThumbnailImage(maxw, maxh, () => { return false; }, IntPtr.Zero);
+            var scale = 1f;
+            var tw = bm.Width;
+            var th = bm.Height;
+            if (tw > maxw)
+            {
+                tw = maxw;
+                scale = (float)maxw / (float)bm.Width;
+                th = (int)(bm.Height * scale);
+            }
+            if (th > maxh)
+            {
+                th = maxh;
+                scale = (float)maxh / (float)bm.Height;
+                tw = (int)(bm.Width * scale);
+            }
+            var thumb_i = bm.GetThumbnailImage(tw, th, () => { return false; }, IntPtr.Zero);
             if (dispose)
             {
                 bm.Dispose();
