@@ -76,6 +76,8 @@
     <Compile Include="netw\BysImplV.cs" />
     <Compile Include="netw\dtm\DTM_C.cs" />
     <Compile Include="netw\dtm\DTM_C_j.cs" />
+    <Compile Include="netw\http\FilterF.cs" />
+    <Compile Include="netw\http\filter\CORS.cs" />
     <Compile Include="netw\http\HResult.cs" />
     <Compile Include="netw\http\Request.cs" />
     <Compile Include="netw\http\Server.cs" />
