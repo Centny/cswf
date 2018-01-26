@@ -139,6 +139,14 @@ namespace io.vty.cswf.util
                 {
                     Uri ruri = new Uri(uri);
                     var web = new WebClient();
+                    if (ruri.UserInfo != null)
+                    {
+                        var userInfo = ruri.UserInfo.Split(':');
+                        if (userInfo.Length > 1)
+                        {
+                            web.Credentials = new NetworkCredential(userInfo[0], userInfo[1]);
+                        }
+                    }
                     data = web.DownloadString(ruri);
                     break;
                 }

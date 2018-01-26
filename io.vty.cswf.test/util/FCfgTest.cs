@@ -2,6 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using io.vty.cswf.util;
 using System.IO;
+using System.Net;
 
 namespace io.vty.cswf.test.util
 {
@@ -38,6 +39,17 @@ namespace io.vty.cswf.test.util
             Console.WriteLine(cfg);
             Assert.AreEqual("b/", cfg.Val("wxk", ""));
             
+        }
+
+        [TestMethod]
+        public void FCfgLoadRemoteTest()
+        {
+            //ServicePointManager.ServerCertificateValidationCallback = delegate { return true; };
+            var cfg = new FCfg();
+            cfg.Load("https://test:123@wxx.loc/test.properties");
+            Console.WriteLine(cfg);
+            Assert.AreEqual("1", cfg.Val("xa", ""));
+
         }
     }
 }
